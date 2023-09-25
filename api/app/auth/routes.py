@@ -6,6 +6,7 @@ from app.auth import authBp
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt, get_jwt_identity
+from flask_login import login_user
 
 @authBp.route("/signup", methods = ['POST'], strict_slashes = False)
 def sign_up():
@@ -58,13 +59,15 @@ def login():
             "message": "Username or password is invalid"
         }), 400
     
+    login_user(user)
     access_token = create_access_token(identity=user.id)
     refresh_token = create_refresh_token(identity=user.id)
 
     return jsonify({
         "message": "Login success",
         "accessToken": access_token,
-        "refreshToken": refresh_token
+        "refreshToken": refresh_token,
+        "user": user.serialize() 
     }), 200
 
 @authBp.route("/logout", methods=["POST"], strict_slashes = False)
@@ -88,7 +91,7 @@ def logout():
 def refresh():
     current_user = get_jwt_identity()
     access_token = {
-        'access token': create_access_token(identity=current_user)
+        'accessToken': create_access_token(identity=current_user)
     }
     return jsonify(access_token), 200
 

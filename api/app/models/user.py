@@ -13,12 +13,33 @@ class Users(Base):
     role = db.Column(db.String(10), nullable=False)
     posts = db.relationship('Posts', back_populates="user")
 
+    def has_role(self, role_name):
+        return self.role == role_name
+    
+    @property
+    def is_authenticated(self):
+        return True
+    
+    @property
+    def is_active(self):
+        return True
+    @property
+    def is_anonymous(self):
+        return False
+    
+    def get_id(self):
+        return str(self.id)
+    
+    def __unicode__(self):
+        return self.username
+
     def serialize(self):
         return {
             "id": self.id,
             "name": self.name,
             "username": self.username,
-            "email": self.email
+            "email": self.email,
+            "role": self.role
         }
 
 

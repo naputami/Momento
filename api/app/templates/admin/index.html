@@ -1,0 +1,32 @@
+{% extends 'admin/master.html' %}
+
+{% block body %}
+<div class="card">
+    <div class="card-header">
+     Admin
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">Menu admin</h5>
+      <p class="card-text">Selamat datang di dashboard admin!</p>
+      <a href="/" class="btn btn-primary">Go back</a>
+      <a href="" class="btn btn-primary" onclick="logout(event)">Log Out</a>
+    </div>
+</div>
+<script>
+  function logout(event){
+    event.preventDefault()
+    let xhr = new XMLHttpRequest();
+    let url = "http://127.0.0.1:5000/api/auth/logout";
+
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Authorization", `Bearer ${localStorage.getItem('access_token')}`);
+    xhr.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200) {
+        localStorage.removeItem("access_token")
+        window.location.href = "/login";
+        }
+  };
+  xhr.send();
+}
+</script>
+{% endblock %}
