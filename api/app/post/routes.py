@@ -102,6 +102,11 @@ def edit_post(post_id):
 
     current_user = get_jwt_identity()
 
+    if not current_user:
+        return jsonify({
+            "message": "You must login to edit a post!"
+        }), 401
+
     post = db.session.query(Posts).filter_by(id=post_id).first()
 
     if not post:
@@ -129,10 +134,54 @@ def edit_post(post_id):
 
     return response, 200
 
+# endpoint for deleting a post
+@postBp.route("/<post_id>", methods=['DELETE'], strict_slashes=False)
+@jwt_required(locations=["headers"])
+def delete_post(post_id):
+    current_user = get_jwt_identity()
+
+    if not current_user:
+        return jsonify({
+            "message": "You must login to delete a post!"
+        }), 401
+
+    post = db.session.query(Posts).filter_by(id=post_id).first()
+
+    if not post:
+        return jsonify({
+            "success": False,
+            "message": "Post not found!"
+        }), 404
+    
+    # casting to string for comparing value only
+    if current_user != str(post.user_id):
+        return jsonify({
+            "message":f'You do not have permission to delete this post.'
+        }), 403
+    
+    db.session.delete(post)
+    db.session.commit()
+
+    response = jsonify({
+            "success": True,
+            "message" : f'post with id {post_id} has been deleted'
+    })
+
+    return response, 200
+    
+
+
 # endpoint for liking a post
 @postBp.route("/<post_id>/like", methods=['POST'], strict_slashes=False)
 @jwt_required(locations=["headers"])
 def like_post(post_id):
+
+    user_id = get_jwt_identity()
+
+    if not user_id:
+        return jsonify({
+            "message": "You must login to like a post!"
+        }), 401
 
     post = db.session.query(Posts).filter_by(id=post_id).first()
 
@@ -140,7 +189,32 @@ def like_post(post_id):
         post.likes += 1
         db.session.commit()
         return jsonify({
-            'message': 'Post liked successfully',
+            'message': 'Post is liked successfully',
+            'post': post.serialize()
+            }), 200
+    else:
+        return jsonify({'error': 'Post not found'}), 404
+
+# endpoint for disliking a post
+@postBp.route("/<post_id>/dislike", methods=['POST'], strict_slashes=False)
+@jwt_required(locations=["headers"])
+def dislike_post(post_id):
+
+    user_id = get_jwt_identity()
+
+    if not user_id:
+        return jsonify({
+            "message": "You must login to dislike a post!"
+        }), 401
+
+
+    post = db.session.query(Posts).filter_by(id=post_id).first()
+
+    if post:
+        post.likes -= 1
+        db.session.commit()
+        return jsonify({
+            'message': 'Post is disliked successfully',
             'post': post.serialize()
             }), 200
     else:
