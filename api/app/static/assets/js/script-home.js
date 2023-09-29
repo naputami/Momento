@@ -18,6 +18,16 @@ function get_data(){
                blockquote.setAttribute("class", "blockquote mb-2 mt-2")
                const p = document.createElement("p")
                p.innerHTML = tweet.content
+
+               
+              if(tweet.img_name && tweet.img_path != null){
+                let imgEl = document.createElement("img")
+                imgEl.setAttribute("alt", tweet.img_name)
+                imgEl.setAttribute("src", tweet.img_path)
+                imgEl.setAttribute("class", "object-fit-content w-50 h-100 img-thumbnail")
+                imgEl.setAttribute("id", tweet.id)
+                blockquote.append(p, imgEl)
+              }
                
                blockquote.append(p)
                cardBody.append(blockquote)
@@ -108,36 +118,55 @@ formTweet.addEventListener("submit", function(e){
 
 //UPLOAD FILES
 //POST NEW TWEET
-// const formUpload = document.getElementById("form-upload")
-// formUpload.addEventListener("submit", function(e){
-//     e.preventDefault()
-//     let xhr = new XMLHttpRequest();
-//     let url = "http://127.0.0.1:5000/api/uploads";
+const formUpload = document.getElementById("imageUploadForm")
+formUpload.addEventListener("submit", function(e){
+    e.preventDefault()
+    let xhr = new XMLHttpRequest();
+    let url = "http://127.0.0.1:5000/api/posts";
  
-//     let formData = new FormData()
+    let formData = new FormData()
+    const imageCaption = document.getElementById("imageCaption").value
 
-//     file = document.getElementById("formFile");
-//     formData.append('file', file.files[0])
+    const file = document.getElementById("uploadImage");
+
+    if(imageCaption.trim().length === 0){
+      alert("Caption tidak boleh kosong")
+    } else {
+      formData.append('content', imageCaption)
+      formData.append('file', file.files[0])
+      location.reload();
+
+    }
     
-//     xhr.open("POST", url, true);
-//     xhr.send(formData);
-//     xhr.onreadystatechange = function () {
-//       if (this.readyState == 4 && this.status == 200) {
-//           divEl.innerHTML = this.responseText
-//           formTweet.reset()
-//       }
-//     };
+    
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Authorization", `Bearer ${localStorage.getItem("access_token")}`)
+    xhr.send(formData);
+    xhr.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200) {
+          formTweet.reset()
+          formUpload.reset()
+          divEl.setAttribute("class", "alert alert-success");
+          divEl.setAttribute("role", "alert");
+          divEl.innerHTML = "Tweet berhasil ditambahkan !";
 
-// //   //give feedback
-//   const alertLoc = document.getElementById("tweet-alert")
-//   const divEl = document.createElement("div");
-//   divEl.setAttribute("class", "alert alert-success");
-//   divEl.setAttribute("role", "alert");
+      } else {
+        divEl.setAttribute("class", "alert alert-danger");
+        divEl.setAttribute("role", "alert");
+        divEl.innerHTML = this.responseText
+      }
+    };
+
+//   //give feedback
+  const alertLoc = document.getElementById("tweet-alert")
+  const divEl = document.createElement("div");
+  divEl.setAttribute("class", "alert alert-success");
+  divEl.setAttribute("role", "alert");
  
-//   alertLoc.appendChild(divEl);
+  alertLoc.appendChild(divEl);
 
   
-// })
+})
 
 const logout = document.getElementById("logout")
 logout.addEventListener("click", function(e){

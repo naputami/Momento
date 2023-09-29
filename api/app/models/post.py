@@ -7,8 +7,8 @@ class Posts(Base):
     __tablename__ = "posts"
 
     content = db.Column(db.Text, nullable=False)
-    img_name = db.Column(db.String(255), nullable=True)
-    img_path = db.Column(db.String(255), nullable=True)
+    img_name = db.Column(db.String(500), nullable=True)
+    img_path = db.Column(db.String(500), nullable=True)
     likes = db.Column(db.Integer, default=0)
     user_id = db.Column(UUID(as_uuid=True), db.ForeignKey("users.id"))
     user = db.relationship("Users", back_populates="posts")

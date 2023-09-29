@@ -43,7 +43,36 @@
                     <label for="tweets">Tweets</label>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#uploadImageModal">
+                    Upload image
+                </button>
             </form>
+            <div class="modal fade" id="uploadImageModal" tabindex="-1" aria-labelledby="uploadImageModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="uploadImageModalLabel">Upload Image</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <form id="imageUploadForm">
+                        <div class="mb-3">
+                            <label for="imageCaption" class="col-form-label">Tweet:</label>
+                            <input type="text" class="form-control" id="imageCaption" placeholder="tweet">
+                        </div>
+                        <div class="mb-3">
+                            <label for="uploadImage" class="form-label"></label>
+                            <input class="form-control" type="file" id="uploadImage">
+                          </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+                  </div>
+                </div>
+              </div>
             <!-- <form id="form-upload">
                 <div id="tweet-alert"></div>
                 <div class="row g-3 align-items-center">

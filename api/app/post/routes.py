@@ -1,9 +1,15 @@
 from flask import jsonify, request
-from app.extentions import db
+from app.extentions import db, client
 from app.models.post import Posts
 from app.models.user import Users
 from app.post import postBp
 from flask_jwt_extended import jwt_required, get_jwt_identity
+from minio import Minio
+from datetime import timedelta
+from werkzeug.utils import secure_filename
+import os
+from app.post.helper import allowed_file, BUCKET_NAME
+
 
 # endpoint for getting all posts
 # user can see all posts without login
@@ -51,21 +57,46 @@ def get_one_user_posts(user_id):
 @jwt_required(locations=["headers"])
 def create_post():
 
-    data = request.get_json()
-
-    content = data.get("content")
-    img_name = data.get("img_name", None)
-    img_path = data.get("img_path", None)
-
-    if not content:
-        return jsonify({'error': 'Missing content'}), 400
-
     user_id = get_jwt_identity()
 
     if not user_id:
         return jsonify({
             "message": "You must login to create a post!"
         }), 401
+    
+    found = client.bucket_exists(BUCKET_NAME)
+
+    if not found:
+        client.make_bucket(BUCKET_NAME)
+    else:
+        print("Bucket already exists")
+    
+    if 'file' in request.files:
+        file = request.files['file']
+        expiration_time = timedelta(days=7)
+        if file and allowed_file(file.filename):
+            content = request.form.get('content')
+            user_id = get_jwt_identity()
+            image_name = secure_filename(file.filename)
+            image_size = os.fstat(file.fileno()).st_size
+            client.put_object(BUCKET_NAME, image_name, file, image_size)
+            image_path = client.presigned_get_object(BUCKET_NAME, image_name, expires=expiration_time)
+            new_content = Posts(content=content, img_name=image_name, img_path=image_path, user_id=user_id)
+            db.session.add(new_content)
+            db.session.commit()
+            response = jsonify(success = True, data = new_content.serialize())
+            return response, 200
+
+
+    data = request.get_json()
+
+    content = data.get("content")
+    img_name = data.get("img_name", None)
+    img_path = data.get("img_path", None)
+
+
+    if not content:
+        return jsonify({'error': 'Missing content'}), 400
 
 
     new_post = Posts(
