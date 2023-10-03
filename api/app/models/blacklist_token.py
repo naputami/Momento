@@ -1,6 +1,5 @@
 from app.extentions import db
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy import text
 import uuid
 
 class BlacklistTokens(db.Model):
