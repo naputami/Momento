@@ -34,13 +34,20 @@ def create_app(config_class=Config):
     admin.add_view(CustomModelView(Users, db.session))
     admin.add_view(CustomModelView(Posts, db.session))
 
-    def schedule_count_tweets():
+    def schedule_count_posts():
         with app.app_context():
             from app.scheduler.total_posts import count_posts
             count_posts()
-            print("Periodic Task Running")
+            print("Count posts running")
+
+    def schedule_update_img_path():
+        with app.app_context():
+            from app.scheduler.update_img_path import update_img_path
+            update_img_path
+            print("Update image path running")
     
-    schedule.every(60).seconds.do(schedule_count_tweets)
+    schedule.every(60).seconds.do(schedule_count_posts)
+    schedule.every(1).days.do(schedule_update_img_path)
 
     def run_scheduler():
         while True:
