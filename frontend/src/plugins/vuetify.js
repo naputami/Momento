@@ -2,7 +2,8 @@ import { createVuetify} from 'vuetify'
 import * as components from "vuetify/components"
 import * as directives from "vuetify/directives"
 import { aliases, mdi } from 'vuetify/iconsets/mdi-svg'
-import { mdiAccount, mdiLock, mdiEye, mdiEyeOff, mdiChevronDoubleRight } from '@mdi/js'
+import { mdiAccount, mdiLock, mdiChessQueen, mdiHome, mdiLogout, 
+mdiShieldCrown, mdiHeart, mdiHeartOutline, mdiDelete, mdiCamera, mdiTextBox, mdiPencil } from '@mdi/js'
 import '@/sass/variable.scss'
 
 const myTheme = {
@@ -22,6 +23,12 @@ const myTheme = {
   }
 
 const vuetify = createVuetify({
+  defaults: {
+    VTextField : {
+      color: 'primary',
+      variant: 'outlined'
+    }
+  },
   theme: {
     defaultTheme: 'myTheme',
     themes: {
@@ -34,9 +41,16 @@ const vuetify = createVuetify({
       ...aliases,
       account: mdiAccount,
       password: mdiLock,
-      hidePassword: mdiEye,
-      showPassword: mdiEyeOff,
-      chevronRight: mdiChevronDoubleRight
+      home: mdiHome,
+      crown: mdiChessQueen,
+      logout: mdiLogout,
+      admin: mdiShieldCrown,
+      heart: mdiHeart,
+      heartOutline: mdiHeartOutline,
+      delete: mdiDelete,
+      camera: mdiCamera,
+      pencil: mdiPencil,
+      text: mdiTextBox
     },
     sets: {
       mdi,
