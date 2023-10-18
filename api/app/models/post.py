@@ -23,7 +23,8 @@ class Posts(Base):
             "img_name": self.img_name,
             "img_path": self.img_path,
             "likes": self.likes,
-            "username": self.user.username
+            "username": self.user.username,
+            "created_at": self.created_at
         }
 
 @event.listens_for(Posts, 'before_insert')

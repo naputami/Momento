@@ -14,12 +14,12 @@ def sign_up():
     name = data.get("name", None)
     email = data.get("email", None)
     username = data.get("username", None)
-    role = data.get("role", "user")
+    role = data.get("role", "user").lower()
     password_hash = generate_password_hash(data.get("password", None))
 
-    if not name or not email or not password_hash or not username:
+    if not name or not email or not password_hash or not username or not role:
         return jsonify({
-        "message": "Name, email, username, and password are required"
+        "message": "Name, email, username, role, and password are required"
     }), 400
 
     try:
