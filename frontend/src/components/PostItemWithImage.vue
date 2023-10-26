@@ -24,9 +24,9 @@
 
         <template v-slot:append>
           <div class="d-flex align-center">
-            <v-btn icon="$heart" color="red"></v-btn>
+            <v-btn icon="$heartOutline" color="red"></v-btn>
             <span class="subheading me-2">{{ likes }}</span>
-            <v-btn icon="$delete"></v-btn>
+            <v-btn icon="$delete" @click="handleDeletePost(id)"></v-btn>
           </div>
         </template>
       </v-list-item>
@@ -36,7 +36,15 @@
 
 <script setup>
 import { useDisplay } from 'vuetify';
+import { usePostStore } from '../store/usePostStore';
+
+const {deletePost} = usePostStore()
 const { mdAndUp } = useDisplay()
+
+const handleDeletePost = async (id) => {
+  await deletePost(id)
+}
+
 // eslint-disable-next-line no-unused-vars
 const props = defineProps({
     content: String,
@@ -44,6 +52,7 @@ const props = defineProps({
     img_path: String,
     username: String,
     likes: Number,
-    created_at: String
+    created_at: String,
+    id: String
 })
 </script>

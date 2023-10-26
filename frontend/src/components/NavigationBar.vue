@@ -14,7 +14,7 @@
         <v-toolbar-title>Momento</v-toolbar-title>
         <v-spacer></v-spacer>
         <div class="hidden-sm-and-down">
-            <v-btn variant="text">
+            <v-btn flat>
                 <v-icon left dark icon="$home"></v-icon>
                 Home
             </v-btn>
@@ -26,7 +26,7 @@
                 <v-icon left dark icon="$admin"></v-icon>
                 Admin
             </v-btn>
-            <v-btn variant="text">
+            <v-btn variant="text" @click="handleLogout">
                 <v-icon left dark icon="$logout"></v-icon>
                 Logout
             </v-btn>
@@ -36,5 +36,33 @@
 
 <script setup>
 import { ref } from 'vue';
-const sidebar = ref(false)
+import { useAuth } from '../compostable/auth';
+import { useAuthStore } from '../store/useAuthStore';
+import { useRouter } from 'vue-router';
+
+const {userLogout, success, alertData, error} = useAuth();
+const {removeToken, accessToken} = useAuthStore();
+const sidebar = ref(false);
+const router = useRouter();
+
+const handleLogout = async () => {
+    await userLogout('api/auth/logout', accessToken)
+
+    if(success.value){
+        removeToken();
+        router.push('/login')
+    }
+
+    if(error.value){
+        alertData.message = error.value
+        alertData.status = 'error'
+        alert(alertData.message)
+    }
+}
 </script>
+
+<!-- <style scoped>
+.test {
+    color: aqua;
+}
+</style> -->

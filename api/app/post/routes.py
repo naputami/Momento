@@ -16,7 +16,7 @@ from app.post.helper import allowed_file, BUCKET_NAME
 @postBp.route("", methods=['GET'], strict_slashes=False)
 def get_all_post():
 
-    limit = request.args.get('limit', 20)
+    limit = request.args.get('limit', 100)
 
     if type(limit) is not int:
         return jsonify({'message': 'invalid parameter'}), 400
@@ -84,7 +84,7 @@ def create_post():
             new_content = Posts(content=content, img_name=image_name, img_path=image_path, user_id=user_id)
             db.session.add(new_content)
             db.session.commit()
-            response = jsonify(success = True, data = new_content.serialize())
+            response = jsonify(success = True, message ='New post is created!', post = new_content.serialize())
             return response, 200
 
 
