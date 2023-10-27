@@ -17,16 +17,16 @@
         <template v-slot:prepend>
           <v-icon icon="$account" class="mr-2"></v-icon>
           <div class="d-flex flex-column">
-            <v-list-item-title>{{ username }}</v-list-item-title>
+            <v-list-item-title>{{ user }}</v-list-item-title>
             <v-list-item-subtitle>{{ created_at }}</v-list-item-subtitle>
           </div>
         </template>
 
         <template v-slot:append>
           <div class="d-flex align-center">
-            <v-btn icon="$heartOutline" color="red"></v-btn>
+            <v-btn :icon="liked? '$heart' : '$heartOutline'" color="red" @click="liked? handleDislikePost(id) : handleLikePost(id)"></v-btn>
             <span class="subheading me-2">{{ likes }}</span>
-            <v-btn icon="$delete" @click="handleDeletePost(id)"></v-btn>
+            <v-btn icon="$delete" @click="handleDeletePost(id)" v-show="user === username"></v-btn>
           </div>
         </template>
       </v-list-item>
@@ -36,21 +36,47 @@
 
 <script setup>
 import { useDisplay } from 'vuetify';
+import { ref, onMounted } from 'vue';
 import { usePostStore } from '../store/usePostStore';
+import { useAuthStore } from '../store/useAuthStore';
 
-const {deletePost} = usePostStore()
-const { mdAndUp } = useDisplay()
+const {deletePost, likePost, dislikePost} = usePostStore();
+const { mdAndUp } = useDisplay();
+const liked = ref(false);
+const { username } = useAuthStore();
 
 const handleDeletePost = async (id) => {
   await deletePost(id)
 }
 
-// eslint-disable-next-line no-unused-vars
+const handleLikePost = async (id) => {
+  await likePost(id);
+  liked.value = true;
+  localStorage.setItem(`liked_${id}`, 'true');
+};
+
+const handleDislikePost = async (id) => {
+  await dislikePost(id);
+  liked.value = false;
+  localStorage.setItem(`liked_${id}`, 'false');
+}; 
+
+onMounted(() => {
+  const id = props.id;
+  const storedValue = localStorage.getItem(`liked_${id}`);
+  if (storedValue === 'true') {
+    liked.value = true;
+  }
+  if (storedValue === 'false') {
+    liked.value = false;
+  }
+});
+
 const props = defineProps({
     content: String,
     img_name: String,
     img_path: String,
-    username: String,
+    user: String,
     likes: Number,
     created_at: String,
     id: String

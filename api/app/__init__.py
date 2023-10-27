@@ -9,10 +9,13 @@ from app.models.user import Users
 from app.models.post import Posts
 from flask_admin import Admin
 from app.admin.MyModelView import CustomModelView, AdminModelView
-
+from dotenv import load_dotenv
+import os
 import schedule
 import time
 import threading
+
+load_dotenv()
 
 
 def create_app(config_class=Config):
@@ -30,7 +33,7 @@ def create_app(config_class=Config):
     def load_user(user_id):
         return Users.query.get(user_id)
     
-    admin = Admin(app, name='Dashboard', template_mode='bootstrap4', index_view=AdminModelView('home'), url="/")
+    admin = Admin(app, name='Dashboard', template_mode='bootstrap4', index_view=AdminModelView('home'))
     admin.add_view(CustomModelView(Users, db.session))
     admin.add_view(CustomModelView(Posts, db.session))
 

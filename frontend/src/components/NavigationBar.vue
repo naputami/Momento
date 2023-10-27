@@ -1,10 +1,10 @@
 <template>
         <v-navigation-drawer v-model="sidebar" color="primary" temporary>
         <v-list  density="compact" nav>
-          <v-list-item prepend-icon="$home" title="Home" value="home"></v-list-item>
-          <v-list-item prepend-icon="$crown" title="Leaderboard" value="leaderboard"></v-list-item>
-          <v-list-item prepend-icon="$admin" title="Admin" value="admin"></v-list-item>
-          <v-list-item prepend-icon="$logout" title="Logout" value="logout"></v-list-item>
+          <v-list-item prepend-icon="$home" title="Home" value="home" to="/"></v-list-item>
+          <v-list-item prepend-icon="$crown" title="Leaderboard" value="leaderboard" to="/leaderboard"></v-list-item>
+          <v-list-item prepend-icon="$admin" title="Admin" value="admin" :href="urlAdmin" v-show="role === 'admin'"></v-list-item>
+          <v-list-item prepend-icon="$logout" title="Logout" value="logout" @click="handleLogout"></v-list-item>
         </v-list>
     </v-navigation-drawer>
     <v-app-bar color="primary" scroll-behavior="elevate">
@@ -14,15 +14,15 @@
         <v-toolbar-title>Momento</v-toolbar-title>
         <v-spacer></v-spacer>
         <div class="hidden-sm-and-down">
-            <v-btn flat>
+            <v-btn flat to="/">
                 <v-icon left dark icon="$home"></v-icon>
                 Home
             </v-btn>
-            <v-btn flat>
+            <v-btn flat to="/leaderboard">
                 <v-icon left dark icon="$crown"></v-icon>
                 Leaderboard
             </v-btn>
-            <v-btn flat>
+            <v-btn flat :href="urlAdmin" v-show="role === 'admin'">
                 <v-icon left dark icon="$admin"></v-icon>
                 Admin
             </v-btn>
@@ -38,19 +38,23 @@
 import { ref } from 'vue';
 import { useAuth } from '../compostable/auth';
 import { useAuthStore } from '../store/useAuthStore';
+import { usePostStore } from '../store/usePostStore';
 import { useRouter } from 'vue-router';
 
 const {userLogout, success, alertData, error} = useAuth();
-const {removeToken, accessToken} = useAuthStore();
+const { removeUserData, role } = useAuthStore();
+const {removePostData} = usePostStore();
 const sidebar = ref(false);
 const router = useRouter();
+const urlAdmin = import.meta.env.VITE_API_BASE_URL + "/admin";
 
 const handleLogout = async () => {
-    await userLogout('api/auth/logout', accessToken)
+    await userLogout('api/auth/logout')
 
     if(success.value){
-        removeToken();
-        router.push('/login')
+        removeUserData();
+        removePostData();
+        router.push('/login');
     }
 
     if(error.value){

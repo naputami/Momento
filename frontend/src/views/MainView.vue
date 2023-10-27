@@ -5,7 +5,7 @@
     <v-container class="pt-16">
         <div v-for="item in postState" :key="item.id">
             <PostItem v-if="item.img_path === null" :user="item.username" :likes="item.likes" :content="item.content" :created_at="item.created_at" :id="item.id" />
-            <PostItemWithImage v-else :username="item.username" :likes="item.likes" :content="item.content" :created_at="item.created_at" :img_name="item.img_name" :img_path="item.img_path" :id="item.id" />
+            <PostItemWithImage v-else :user="item.username" :likes="item.likes" :content="item.content" :created_at="item.created_at" :img_name="item.img_name" :img_path="item.img_path" :id="item.id" />
 
         </div>
     </v-container>
@@ -22,7 +22,7 @@ import { usePostStore } from "../store/usePostStore";
 import { storeToRefs } from "pinia";
 import AddPost from "../components/AddPost.vue";
 import PostItem from "../components/PostItem.vue";
-import NavigationBar from "../components/NavigationBar.vue"
+import NavigationBar from "../components/NavigationBar.vue";
 import PostItemWithImage from "../components/PostItemWithImage.vue"
 import { onMounted } from "vue";
 

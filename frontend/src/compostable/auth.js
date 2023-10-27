@@ -1,12 +1,15 @@
 /* eslint-disable no-unused-vars */
 import { ref, reactive } from 'vue';
 import axios from 'axios';
+import postApi from '../services/postApi';
 
 export const useAuth = () => {
     const success = ref(null);
     const error = ref(null);
     const accessToken = ref(null);
-    const refreshToken = ref(null)
+    const refreshToken = ref(null);
+    const username = ref(null);
+    const role = ref(null);
 
     const alertData = reactive({
         message: '',
@@ -23,9 +26,12 @@ export const useAuth = () => {
 
     const userLogin = async (url, formData) => {
         try {
+            axios.defaults.withCredentials = true;
             const response = await axios.post(url, formData);
             accessToken.value = response.data.accessToken;
             refreshToken.value = response.data.refreshToken;
+            username.value = response.data.user.username;
+            role.value = response.data.user.role;
             success.value = response.data.message;
         } catch(err){
             error.value = err.response.data.message;
@@ -33,14 +39,9 @@ export const useAuth = () => {
         }
     }
 
-    const userLogout = async (url, accessToken) => {
+    const userLogout = async (url) => {
         try {
-            const response = await axios.post(url, null, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${accessToken}`
-                }
-            })
+            const response = await postApi.post(url, null);
             success.value = response.data.message;
         } catch(err) {
             error.value = err.response.data.message;
@@ -69,6 +70,8 @@ export const useAuth = () => {
         alertVisibility,
         userLogout,
         accessToken,
-        refreshToken
+        refreshToken,
+        username,
+        role
     }
 } 

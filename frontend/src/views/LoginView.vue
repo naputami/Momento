@@ -54,8 +54,8 @@
       password: ''
     });
 
-    const { success, userLogin, error, alertData, alertVisibility, hideAlert, accessToken, refreshToken } = useAuth();
-    const {setToken} = useAuthStore();
+    const { success, userLogin, error, alertData, alertVisibility, hideAlert, accessToken, refreshToken, role, username } = useAuth();
+    const {setToken, setUserData} = useAuthStore();
 
     const handleLogin = async () => {
       await userLogin('api/auth/login', loginData);
@@ -63,6 +63,7 @@
 
       if(success.value) {
         setToken(accessToken.value, refreshToken.value);
+        setUserData(username.value, role.value);
         router.push('/');
         loading.value = false;
       }

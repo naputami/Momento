@@ -47,12 +47,23 @@ export const useFetch = () => {
     }
 
 
+    const fetchCountPosts = async () => {
+        try {
+            const response = await postApi.get('api/count_posts');
+            data.value = response.data.data;
+        } catch(err) {
+            console.log("Something error", err);
+        }
+    }
+
+
     return {
         fetchPosts,
         data,
         postContent,
         postFile,
-        addedPost
+        addedPost,
+        fetchCountPosts
     }
 
 

@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const postApi = axios.create();
+const postApi = axios.create({
+  withCredentials: true
+});
 
 postApi.interceptors.request.use(
     (config) => {
