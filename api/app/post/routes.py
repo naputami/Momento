@@ -9,24 +9,38 @@ from datetime import timedelta
 from werkzeug.utils import secure_filename
 import os
 from app.post.helper import allowed_file, BUCKET_NAME
-
+from sqlalchemy import desc
 
 # endpoint for getting all posts
 # user can see all posts without login
 @postBp.route("", methods=['GET'], strict_slashes=False)
+@jwt_required(locations=["headers"])
 def get_all_post():
 
-    limit = request.args.get('limit', 100)
+    # limit = request.args.get('limit', 100)
 
-    if type(limit) is not int:
-        return jsonify({'message': 'invalid parameter'}), 400
+    # if type(limit) is not int:
+    #     return jsonify({'message': 'invalid parameter'}), 400
+    user_id = get_jwt_identity()
+
+    if not user_id:
+        return jsonify({
+            "message": "You must login to see posts!"
+        }), 401
     
-    posts = db.session.execute(db.select(Posts).limit(limit)).scalars()
+    page = request.args.get('page', 1, type=int)
+    per_page = request.args.get('per_page', 5, type=1)
+
+
+    posts = Posts.query.order_by(desc(Posts.created_at)).paginate(page=page, per_page=per_page)
 
     data = [post.serialize() for post in posts]
 
     response = jsonify({
-        "posts": data
+        "posts": data,
+        "page": posts.page,
+        "total_page": posts.pages,
+        "total_item": posts.total
     })
 
     return response, 200

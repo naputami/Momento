@@ -7,7 +7,7 @@
           <v-list-item prepend-icon="$logout" title="Logout" value="logout" @click="handleLogout"></v-list-item>
         </v-list>
     </v-navigation-drawer>
-    <v-app-bar color="primary" scroll-behavior="elevate">
+    <v-app-bar color="primary" scroll-behavior="hide">
         <span class="hidden-md-and-up">
             <v-app-bar-nav-icon @click="sidebar = !sidebar"></v-app-bar-nav-icon>
         </span>
@@ -43,7 +43,7 @@ import { useRouter } from 'vue-router';
 
 const {userLogout, success, alertData, error} = useAuth();
 const { removeUserData, role } = useAuthStore();
-const {removePostData} = usePostStore();
+const {removePostData, postState} = usePostStore();
 const sidebar = ref(false);
 const router = useRouter();
 const urlAdmin = import.meta.env.VITE_API_BASE_URL + "/admin";

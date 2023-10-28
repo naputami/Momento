@@ -32,9 +32,15 @@
 <script setup>
 import { ref, reactive } from 'vue';
 import { usePostStore } from '../store/usePostStore';
+import { useFetch } from '../compostable/post';
+import { storeToRefs } from "pinia";
 
 
-const {addTextOnlyPost, addWithImagePost} = usePostStore();
+
+const {data, postTextOnly, postFile} = useFetch();
+const store = usePostStore();
+const {postState} = storeToRefs(store);
+const {setNewPost} = store;
 
 const formData = reactive({
     content: '',
@@ -47,16 +53,22 @@ const handleAddPost = async () => {
             'content': formData.content
         }
 
-        await addTextOnlyPost(content)
+        await postTextOnly('api/posts', content);
+        setNewPost(data.value);
+        formData.content = ''
         console.log('Post without file')
+        console.log('this is post state', postState.value.posts)
     } else {
-        console.log(formData)
         const post = {
             'content': formData.content,
             'file': formData.file[0]
         }
-        await addWithImagePost(post)
+        await postFile('api/posts', post);
+        setNewPost(data.value);
+        formData.content = '';
+        formData.file = '';
         console.log('Post with file')
+        console.log('this is post state', postState.value.posts)
     }
   
 }

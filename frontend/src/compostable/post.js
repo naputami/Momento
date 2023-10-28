@@ -5,14 +5,15 @@ export const useFetch = () => {
     const success = ref(null);
     const error = ref(null);
     const data = ref([]);
-    const addedPost = ref(null);
+    const totalPage = ref(null);
 
     const fetchPosts = async (url) => {
         try {
             const response = await postApi.get(url);
-            console.log(response.data)
             data.value = response.data.posts;
             success.value = response.data.success;
+            totalPage.value = response.data.total_page;
+            console.log('this is response total page value', totalPage.value)
         } catch(err) {
             error.value = err;
             console.log(err)
@@ -20,10 +21,10 @@ export const useFetch = () => {
         }
     }
 
-    const postContent = async (url, content) => {
+    const postTextOnly = async (url, content) => {
         try {
             const response = await postApi.post(url, content);
-            data.value = data.value.concat(response.data.post);
+            data.value = response.data.post;
             success.value = response.data.success;
         } catch (err) {
             error.value = err;
@@ -38,7 +39,7 @@ export const useFetch = () => {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-            data.value = data.value.concat(response.data.post);
+            data.value = response.data.post;
             success.value = response.data.success;
         } catch (err) {
             error.value = err;
@@ -56,14 +57,43 @@ export const useFetch = () => {
         }
     }
 
+    const deletePost = async (id) => {
+        try {
+            const response = await postApi.delete(`api/posts/${id}`);
+        } catch(err) {
+            console.log("Something wrong", err);
+        }
+    }
+
+    const likePost = async (id) => {
+        try {
+            const response = await postApi.post(`api/posts/${id}/like`, null);
+            data.value = response.data.post;
+        } catch(err) {
+            console.log("Something wrong", err);
+        }
+    }
+
+    const dislikePost = async (id) => {
+        try {
+            const response = await postApi.post(`api/posts/${id}/dislike`, null);
+            data.value = response.data.post;
+        } catch(err) {
+            console.log("Something wrong", err)
+        }
+    };
+
 
     return {
         fetchPosts,
         data,
-        postContent,
+        postTextOnly,
         postFile,
-        addedPost,
-        fetchCountPosts
+        fetchCountPosts,
+        totalPage, 
+        deletePost,
+        likePost,
+        dislikePost
     }
 
 
