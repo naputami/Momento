@@ -34,13 +34,23 @@ import { ref, reactive } from 'vue';
 import { usePostStore } from '../store/usePostStore';
 import { useFetch } from '../compostable/post';
 import { storeToRefs } from "pinia";
+import Swal from 'sweetAlert2';
 
 
-
-const {data, postTextOnly, postFile} = useFetch();
+const {data, postTextOnly, postFile, success, error} = useFetch();
 const store = usePostStore();
 const {postState} = storeToRefs(store);
 const {setNewPost} = store;
+
+
+const Toast = Swal.mixin({
+  toast: true,
+  position: 'bottom',
+  showConfirmButton: false,
+  timer: 2500
+})
+
+
 
 const formData = reactive({
     content: '',
@@ -52,23 +62,56 @@ const handleAddPost = async () => {
         const content = {
             'content': formData.content
         }
-
         await postTextOnly('api/posts', content);
-        setNewPost(data.value);
-        formData.content = ''
-        console.log('Post without file')
-        console.log('this is post state', postState.value.posts)
+
+        if(success.value){
+            setNewPost(data.value);
+            formData.content = ''
+            console.log('Post without file')
+            console.log('this is post state', postState.value.posts)
+            Toast.fire({
+                icon: 'success',
+                title: 'Post is successfully created!'
+            })
+            success.value = null;
+        }
+
+        if(error.value){
+            Toast.fire({
+                icon: 'error',
+                title: `${error.value}`
+            })
+            error.value = null;
+        }
+       
     } else {
         const post = {
             'content': formData.content,
             'file': formData.file[0]
         }
+
         await postFile('api/posts', post);
-        setNewPost(data.value);
-        formData.content = '';
-        formData.file = '';
-        console.log('Post with file')
-        console.log('this is post state', postState.value.posts)
+
+        if(success.value){
+            setNewPost(data.value);
+            formData.content = '';
+            formData.file = '';
+            console.log('Post with file')
+            console.log('this is post state', postState.value.posts)
+            Toast.fire({
+                icon: 'success',
+                title: 'Post is successfully created!'
+            })
+            success.value = null;
+        }
+       
+        if(error.value){
+            Toast.fire({
+                icon: 'error',
+                title: `${error.value}`
+            })
+            error.value = null;
+        }
     }
   
 }

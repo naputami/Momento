@@ -15,7 +15,7 @@ export const useFetch = () => {
             totalPage.value = response.data.total_page;
             console.log('this is response total page value', totalPage.value)
         } catch(err) {
-            error.value = err;
+            error.value = err.response.data.message;
             console.log(err)
 
         }
@@ -27,8 +27,8 @@ export const useFetch = () => {
             data.value = response.data.post;
             success.value = response.data.success;
         } catch (err) {
-            error.value = err;
-            console.log(error)
+            error.value = err.response.data.error;
+            console.log(err)
         }
     }
 
@@ -42,8 +42,8 @@ export const useFetch = () => {
             data.value = response.data.post;
             success.value = response.data.success;
         } catch (err) {
-            error.value = err;
-            console.log(error)
+            error.value = err.response.data.error;;
+            console.log(err)
         }
     }
 
@@ -60,7 +60,9 @@ export const useFetch = () => {
     const deletePost = async (id) => {
         try {
             const response = await postApi.delete(`api/posts/${id}`);
+            success.value = response.data.success;
         } catch(err) {
+            error.value = err.response.data.message;
             console.log("Something wrong", err);
         }
     }
@@ -93,7 +95,9 @@ export const useFetch = () => {
         totalPage, 
         deletePost,
         likePost,
-        dislikePost
+        dislikePost,
+        success,
+        error
     }
 
 

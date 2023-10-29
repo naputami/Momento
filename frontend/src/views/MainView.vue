@@ -56,6 +56,7 @@ const fetchAnotherPagePost = async () => {
         if(!check){
             await fetchPosts(`api/posts?page=${currentPage.value}`)
             setPosts(data.value)
+            console.log("post state after fetching new page", postState.value.posts)
             cachePage(currentPage.value, data.value)
         }
     } catch (err) {
@@ -93,7 +94,7 @@ watch(currentPage, () => {
 
 @media only screen and (min-width: 992px) {
     .fab {
-        right: 18rem;
+        right: 15rem;
     }
 }
 </style>

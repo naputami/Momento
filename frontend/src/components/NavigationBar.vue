@@ -36,6 +36,7 @@
 
 <script setup>
 import { ref } from 'vue';
+import Swal from 'sweetalert2';
 import { useAuth } from '../compostable/auth';
 import { useAuthStore } from '../store/useAuthStore';
 import { usePostStore } from '../store/usePostStore';
@@ -43,25 +44,54 @@ import { useRouter } from 'vue-router';
 
 const {userLogout, success, alertData, error} = useAuth();
 const { removeUserData, role } = useAuthStore();
-const {removePostData, postState} = usePostStore();
+const {removePostData} = usePostStore();
 const sidebar = ref(false);
 const router = useRouter();
 const urlAdmin = import.meta.env.VITE_API_BASE_URL + "/admin";
 
 const handleLogout = async () => {
-    await userLogout('api/auth/logout')
+    Swal.fire({
+        title: 'Logout Confirmation',
+        text: 'Are you sure to logout?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#006d77ff',
+        cancelButtonColor: '#cd858c',
+        confirmButtonText: 'Yes',
+    }).then(async result => {
+        if(result.isConfirmed){
+            await userLogout('api/auth/logout')
 
-    if(success.value){
-        removeUserData();
-        removePostData();
-        router.push('/login');
-    }
+                if(success.value){
+                    removeUserData();
+                    removePostData();
+                    Swal.fire({
+                            title: 'Logout successfully!',
+                            icon: 'success',
+                            showConfirmButton: false,
+                            timer: 2000
+                        })
+                    router.push('/login');
+                    success.value = null;
+                }
 
-    if(error.value){
-        alertData.message = error.value
-        alertData.status = 'error'
-        alert(alertData.message)
-    }
+                if(error.value){
+                    alertData.message = error.value
+                    alertData.status = 'error'
+                    Swal.fire(
+                        {
+                            title: 'Logout Failed!',
+                            text: `${alertData.message}`,
+                            icon: 'error',
+                            showConfirmButton: false,
+                            timer: 3000
+                        }
+                    )
+                    error.value = null;
+                }
+        }
+    })
+   
 }
 </script>
 

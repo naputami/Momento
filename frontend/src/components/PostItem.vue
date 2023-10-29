@@ -43,10 +43,11 @@ import { useAuthStore } from '../store/useAuthStore';
 import { ref, onMounted } from 'vue';
 import { useFetch } from '../compostable/post';
 import { storeToRefs } from 'pinia';
+import Swal from 'sweetalert2';
 
 const { mdAndUp } = useDisplay();
 const { username } = useAuthStore();
-const { deletePost, likePost, dislikePost, data } =useFetch();
+const { deletePost, likePost, dislikePost, data, success, error } =useFetch();
 
 const liked = ref(false)
 const store = usePostStore();
@@ -55,9 +56,44 @@ const {setDeletedPost, setUpdatedPost} = store;
 
 
 const handleDeletePost = async (id) => {
-  await deletePost(id);
-  setDeletedPost(id);
-  console.log("post state after delete", postState.value.posts)
+  Swal.fire({
+        title: 'Delete Confirmation',
+        text: 'Are you sure to delete this post?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#006d77ff',
+        cancelButtonColor: '#cd858c',
+        confirmButtonText: 'Yes',
+  }).then(async result => {
+      if(result.isConfirmed){
+        await deletePost(id);
+        if(success.value){
+          setDeletedPost(id);
+          console.log("post state after delete", postState.value.posts);
+          Swal.fire({
+                      title: 'Deleting post successfully!',
+                      icon: 'success',
+                      showConfirmButton: false,
+                      timer: 2000
+                    })
+          success.value = null;
+        }
+
+        if(error.value){
+          console.log(error.value)
+          Swal.fire({
+                        title: 'Deleting Post Failed!',
+                        text: `${error.value}`,
+                        icon: 'error',
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+        }
+        error.value = null;
+      }
+     
+  })
+ 
 };
 
 const handleLikePost = async (id) => {
@@ -88,11 +124,7 @@ onMounted(() => {
 const formatDate = (inputDate) => {
   const parsedDate = new Date(inputDate);
 
-  const day = parsedDate.getDate() - 1;
-  const month = parsedDate.getMonth() + 1; 
-  const year = parsedDate.getFullYear();
-
-  const formattedDate = `${String(day).padStart(2, '0')}/${String(month).padStart(2, '0')}/${year}`;
+  const formattedDate =parsedDate.toLocaleDateString('id-ID');
 
   return formattedDate;
 }

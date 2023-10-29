@@ -1,28 +1,24 @@
 <template>
     <v-app>
 
-        <ShowAlert activity="Account Registration" 
-        :message="alertData.message" 
-        :status="alertData.status"
-        v-show="alertVisibility"/>
-
-        <v-container class="mt-2" align="center">
+        <v-container align="center">
             <h1 class="mt-8 heading">Create Account</h1>
             <v-sheet :width="smAndUp? '500' : '330'" class="mt-5 pa-6 pb-3" elevation="4" rounded="lg">
-                <v-form @submit.prevent="handleRegis">
-                    <v-text-field label="Name" placeholder="John Doe" type="text" v-model="userData.name"></v-text-field>
-                    <v-text-field label="Email address" placeholder="johndoe@gmail.com" type="email" v-model="userData.email"></v-text-field>
+                <v-form @submit.prevent="submit">
+                    <v-text-field label="Name" placeholder="John Doe" type="text" v-bind="name"></v-text-field>
+                    <v-text-field label="Email address" placeholder="johndoe@gmail.com" type="email" v-bind="email"></v-text-field>
                     <v-select
                     label="Select Your Role"
                     :items="['Admin', 'User']"
                     variant="outlined"
-                    v-model="userData.role"
+                    v-bind="role"
                     ></v-select>
-                    <v-text-field label="Username" placeholder="johndoe" type="text" v-model="userData.username"></v-text-field>
-                    <v-text-field label="Password" :type="showPassword? 'text': 'password'" :append-inner-icon="showPassword? mdiEyeOff : mdiEye" @click:append-inner="showPassword = !showPassword" v-model="userData.password"></v-text-field>
-                    <v-text-field label="Retype password" :type="showRetypePassword? 'text': 'password'" :append-inner-icon="showRetypePassword? mdiEyeOff : mdiEye" @click:append-inner="showRetypePassword = !showRetypePassword"></v-text-field>
-                    <div class="d-flex flex-column">
+                    <v-text-field label="Username" placeholder="johndoe" type="text" v-bind="username"></v-text-field>
+                    <v-text-field label="Password" :type="showPassword? 'text': 'password'" :append-inner-icon="showPassword? mdiEyeOff : mdiEye" @click:append-inner="showPassword = !showPassword" v-bind="password"></v-text-field>
+                    <v-text-field label="Retype password" :type="showRetypePassword? 'text': 'password'" :append-inner-icon="showRetypePassword? mdiEyeOff : mdiEye" @click:append-inner="showRetypePassword = !showRetypePassword" v-bind="passwordConfirm"></v-text-field>
+                    <div class="d-flex flex-column my-2">
                         <v-btn type="submit" color ="primary">Sign Up</v-btn>
+                        <v-btn color ="primary" variant="outlined" class="mt-2" @click="resetForm()">Clear Form</v-btn>
                     </div>
                     <v-card-text class="text-center">
                         <RouterLink
@@ -39,46 +35,89 @@
 </template>
 
 <script setup>
-    import { ref, reactive } from 'vue';
+    import { ref } from 'vue';
     import { useDisplay } from 'vuetify/lib/framework.mjs';
     import { mdiChevronDoubleRight, mdiEye, mdiEyeOff } from "@mdi/js";
     import { RouterLink  } from 'vue-router';
+    import {useForm} from 'vee-validate';
+    import * as yup from 'yup';
+    import Swal from 'sweetalert2';
     import { useAuth } from '../compostable/auth';
-    import ShowAlert from '../components/showalert.vue';
 
-    const { success, accountRegister, error, alertData, alertVisibility, hideAlert } = useAuth()
+
+    const { success, accountRegister, error } = useAuth();
   
     const showPassword = ref(false);
     const showRetypePassword= ref(false);
     const { smAndUp } = useDisplay();
 
-    const userData = reactive({
-        name: '',
-        username: '',
-        email: '',
-        password: '',
-        role: ''
-    })
+    const schema = yup.object({
+        name: yup.string().required().label('Name'),
+        username: yup.string().required().label('Username'),
+        email: yup.string().email().required().label('E-mail'),
+        password: yup.string().matches( /^(?=.*\d)(?=.*[a-zA-Z])(?=.*[@#$%^&+=!]).{8,}$/, "Password should at least 8 characters including capital letters, numbers, and special characters!").required(),
+        passwordConfirm: yup
+        .string()
+        .oneOf([yup.ref('password')], 'Passwords must match')
+        .required()
+        .label('Password confirmation'),
+        role: yup
+        .string()
+        .required()
+        .oneOf(['User', 'Admin'], 'You should choose a role'),
+  });
 
-    const handleRegis = async () => {
-        await accountRegister('api/auth/signup', userData)
 
-        console.log(success.value)
+    const { defineComponentBinds, handleSubmit, resetForm } = useForm({
+        validationSchema: schema,
+    });
+
+    const vuetifyConfig = (state) => ({
+        props: {
+            'error-messages': state.errors,
+        },
+    });
+
+
+    const name = defineComponentBinds('name', vuetifyConfig);
+    const username = defineComponentBinds('username', vuetifyConfig)
+    const email = defineComponentBinds('email', vuetifyConfig);
+    const password = defineComponentBinds('password', vuetifyConfig);
+    const passwordConfirm = defineComponentBinds('passwordConfirm', vuetifyConfig);
+    const role = defineComponentBinds('role', vuetifyConfig);
+
+
+    const submit = handleSubmit( async values => {
+
+        console.log(values)
+   
+        await accountRegister('api/auth/signup', values);
 
         if(success.value){
-            alertData.message = success.value
-            alertData.status = 'success'
-            alertVisibility.value = true
-            setTimeout(hideAlert, 3000)
+            Swal.fire(
+                        {
+                            title: 'Account Registration Success!',
+                            text: `${success.value}`,
+                            icon: 'success',
+                            showConfirmButton: false,
+                            timer: 3000
+                        }
+                    )
         }
 
         if(error.value){
-            alertData.message = error.value
-            alertData.status = 'error'
-            alertVisibility.value = true
-            setTimeout(hideAlert, 3000)
+            Swal.fire(
+                        {
+                            title: 'Account Registration Failed!',
+                            text: `${error.value}`,
+                            icon: 'error',
+                            showConfirmButton: false,
+                            timer: 3000
+                        }
+                    )
+
         }
-    }
+    })
 
 
 </script>

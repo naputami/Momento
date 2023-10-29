@@ -8,7 +8,7 @@ export const useAuth = () => {
     const error = ref(null);
     const accessToken = ref(null);
     const refreshToken = ref(null);
-    const username = ref(null);
+    const userAccount = ref(null);
     const role = ref(null);
 
     const alertData = reactive({
@@ -30,7 +30,7 @@ export const useAuth = () => {
             const response = await axios.post(url, formData);
             accessToken.value = response.data.accessToken;
             refreshToken.value = response.data.refreshToken;
-            username.value = response.data.user.username;
+            userAccount.value = response.data.user.username;
             role.value = response.data.user.role;
             success.value = response.data.message;
         } catch(err){
@@ -52,7 +52,6 @@ export const useAuth = () => {
     const accountRegister = async (url, formData) => {
         try {
             const response = await axios.post(url, formData);
-            console.log("this is response", response)
             success.value = response.data.message;
         } catch(err) {
             error.value = err.response.data.message;
@@ -71,7 +70,7 @@ export const useAuth = () => {
         userLogout,
         accessToken,
         refreshToken,
-        username,
+        userAccount,
         role
     }
 } 

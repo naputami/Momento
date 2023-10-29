@@ -100,6 +100,10 @@ def create_post():
             db.session.commit()
             response = jsonify(success = True, message ='New post is created!', post = new_content.serialize())
             return response, 200
+        else:
+            return jsonify({
+                "error": "File format is not allowed!"
+            }), 400
 
 
     data = request.get_json()
