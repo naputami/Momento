@@ -1,7 +1,7 @@
 <template>
         <v-navigation-drawer v-model="sidebar" color="primary" temporary>
         <v-list  density="compact" nav>
-          <v-list-item prepend-icon="$home" title="Home" value="home" to="/"></v-list-item>
+          <v-list-item prepend-icon="$home" title="Home" value="home" to="/home"></v-list-item>
           <v-list-item prepend-icon="$crown" title="Leaderboard" value="leaderboard" to="/leaderboard"></v-list-item>
           <v-list-item prepend-icon="$admin" title="Admin" value="admin" :href="urlAdmin" v-show="role === 'admin'"></v-list-item>
           <v-list-item prepend-icon="$logout" title="Logout" value="logout" @click="handleLogout"></v-list-item>
@@ -14,7 +14,7 @@
         <v-toolbar-title>Momento</v-toolbar-title>
         <v-spacer></v-spacer>
         <div class="hidden-sm-and-down">
-            <v-btn flat to="/">
+            <v-btn flat to="/home">
                 <v-icon left dark icon="$home"></v-icon>
                 Home
             </v-btn>

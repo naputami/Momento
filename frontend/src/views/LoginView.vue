@@ -79,10 +79,11 @@
         Swal.fire({
                       title: 'Login successfully!',
                       icon: 'success',
+                      text: `Welcome ${userAccount.value}!`,
                       showConfirmButton: false,
                       timer: 2000
                   })
-        router.push('/');
+        router.push('/home');
         loading.value = false;
         success.value = null;
       }

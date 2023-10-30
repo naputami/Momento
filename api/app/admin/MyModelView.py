@@ -21,8 +21,8 @@ class CustomModelView(ModelView):
 
 class AdminModelView(AdminIndexView):
     def is_accessible(self):
-        print("is authenticated", current_user.is_authenticated)
-        print("has role", current_user.has_role("admin"))
+        # print("is authenticated", current_user.is_authenticated)
+        # print("has role", current_user.has_role("admin"))
         return current_user.is_authenticated and current_user.has_role("admin")
     
     def inaccessible_callback(self, name, **kwargs):

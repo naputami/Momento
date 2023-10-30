@@ -1,7 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
 // import LoginView from '../views/LoginView.vue'
 // import RegisterView from '../views/RegisterView.vue'
-import MainView from '../views/MainView.vue';
+// import MainView from '../views/MainView.vue';
+import FrontPageView from '../views/FrontPageView.vue';
 import { useAuthStore } from '../store/useAuthStore';
 
 const router = createRouter({
@@ -9,8 +10,13 @@ const router = createRouter({
   routes: [
     {
       path: '/',
+      name: 'Front Page',
+      component: FrontPageView,
+    },
+    {
+      path: '/home',
       name: 'Home',
-      component: MainView,
+      component: () => import('../views/MainView.vue'),
       meta: {
         requiresAuth: true
       }
