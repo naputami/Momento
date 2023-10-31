@@ -24,12 +24,15 @@ formLogin.addEventListener("submit", function(e){
     xhr.onreadystatechange = function () {
       if (this.readyState == 4 && this.status == 200) {               
         //   formLogin.reset()
-        let data = JSON.parse(this.response)
+        const data = JSON.parse(this.response)
         localStorage.setItem("role", data.user.role)
         //save to token to localStorage
-        localStorage.setItem("access_token", data.accessToken)
-        localStorage.setItem("refresh_token", data.refreshToken)
-        window.location.href = "/";
+        localStorage.setItem("accessToken", data.accessToken)
+        localStorage.setItem("refreshToken", data.refreshToken)
+        window.location.href = "/admin";
+      } else {
+        const data = JSON.parse(this.response);
+        alert(data.message);
       }
   };
     xhr.send(data);

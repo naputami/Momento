@@ -14,5 +14,5 @@ def update_img_path():
             post.img_path = client.presigned_get_object(BUCKET_NAME, post.img_name, expires=timedelta(days=7))
             post.img_expiration_date = current_time + timedelta(days=7)
             db.session.add(post)
-    
+
     db.session.commit()

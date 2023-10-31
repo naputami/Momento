@@ -208,6 +208,7 @@ def delete_post(post_id):
             "message":f'You do not have permission to delete this post.'
         }), 403
     
+    client.remove_object(BUCKET_NAME, post.img_name)
     db.session.delete(post)
     db.session.commit()
 

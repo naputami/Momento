@@ -1,0 +1,31 @@
+version: '3.8'
+services:
+  minio:
+    image: quay.io/minio/minio:RELEASE.2023-02-22T18-23-45Z
+    command: server /data --console-address ":9001"
+    environment:
+      - MINIO_ROOT_USER=${MINIO_ROOT_USER}
+      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
+    volumes:
+      - minio_data:/data
+    ports:
+      - 9000:9000
+      - 9001:9001
+
+  postgres:
+      image: postgres:latest
+      container_name: postgres_container
+      ports:
+        - 5440:5432
+      environment:
+        - POSTGRES_USER=${POSTGRES_USER}
+        - POSTGRES_DB=${POSTGRES_DB}
+        - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      volumes:
+        - postgres-volume:/var/lib/postgresql/data
+        - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+
+volumes:
+  minio_data:
+  postgres-volume:

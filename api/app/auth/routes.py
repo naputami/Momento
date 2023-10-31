@@ -1,4 +1,4 @@
-from flask import jsonify, request
+from flask import jsonify, request, session
 from app.extentions import db, jwt
 from app.models.user import Users
 from app.models.blacklist_token import BlacklistTokens
@@ -81,6 +81,7 @@ def logout():
 
     db.session.add(token)
     db.session.commit()
+    session.clear()
 
     return jsonify({
         "message": "Logged out sucessfully"
