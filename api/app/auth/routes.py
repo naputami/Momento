@@ -14,7 +14,7 @@ def sign_up():
     name = data.get("name", None)
     email = data.get("email", None)
     username = data.get("username", None)
-    role = data.get("role", "user").lower()
+    role = data.get("role", "member").lower()
     password_hash = generate_password_hash(data.get("password", None))
 
     if not name or not email or not password_hash or not username or not role:

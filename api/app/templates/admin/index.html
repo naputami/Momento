@@ -8,7 +8,7 @@
     <div class="card-body">
       <h5 class="card-title">Menu Admin</h5>
       <p class="card-text">Welcome to Admin Dashboard!</p>
-      <button type="button" class="btn btn-primary" onclick="location.href='/backtoclient'">Go Back</button>
+      <button type="button" class="btn btn-primary" onclick="logout(event)">logout</button>
     </div>
 </div>
 <script>
@@ -22,7 +22,7 @@
     xhr.onreadystatechange = function () {
       if (this.readyState == 4 && this.status == 200) {
         localStorage.clear();
-        window.location.href = "/login";
+        window.location.href = "/backtoclient";
         }
   };
   xhr.send();

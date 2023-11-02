@@ -3,6 +3,7 @@ from app.models.base import Base
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy import event
 from datetime import datetime, timedelta
+import pytz
 
 class Posts(Base):
 
@@ -30,4 +31,4 @@ class Posts(Base):
 @event.listens_for(Posts, 'before_insert')
 def set_default_expiration_date(mapper, connection, target):
     if target.img_path:  
-        target.img_expiration_date = datetime.utcnow() + timedelta(days=7)
+        target.img_expiration_date = datetime.now(pytz.timezone('Asia/Jakarta')) + timedelta(days=7)

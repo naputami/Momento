@@ -39,8 +39,8 @@ def get_all_post():
     response = jsonify({
         "posts": data,
         "page": posts.page,
-        "total_page": posts.pages,
-        "total_item": posts.total
+        "totalPage": posts.pages,
+        "totalPosts": posts.total
     })
 
     return response, 200
@@ -98,7 +98,8 @@ def create_post():
             new_content = Posts(content=content, img_name=image_name, img_path=image_path, user_id=user_id)
             db.session.add(new_content)
             db.session.commit()
-            response = jsonify(success = True, message ='New post is created!', post = new_content.serialize())
+            total_rows = Posts.query.count()
+            response = jsonify(success = True, message ='New post is created!', post = new_content.serialize(), totalPosts = total_rows)
             return response, 200
         else:
             return jsonify({
@@ -126,11 +127,13 @@ def create_post():
 
     db.session.add(new_post)
     db.session.commit()
+    total_rows = Posts.query.count()
 
     response = jsonify({
     "success": True,
     "message": 'New post is created!',
-    "post": new_post.serialize()
+    "post": new_post.serialize(),
+    "totalPosts": total_rows
     })
 
     return response, 200
@@ -208,13 +211,17 @@ def delete_post(post_id):
             "message":f'You do not have permission to delete this post.'
         }), 403
     
-    client.remove_object(BUCKET_NAME, post.img_name)
+    if post.img_path != None:
+        client.remove_object(BUCKET_NAME, post.img_name)
+
     db.session.delete(post)
     db.session.commit()
+    total_rows = Posts.query.count()
 
     response = jsonify({
             "success": True,
-            "message" : f'post with id {post_id} has been deleted'
+            "message" : f'post with id {post_id} has been deleted',
+            "totalPosts": total_rows
     })
 
     return response, 200

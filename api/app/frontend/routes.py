@@ -11,13 +11,6 @@ VUE_BASE_URL = os.getenv('VUE_BASE_URL')
 def login():
     return render_template('/auth/login.html')
 
-# @frontendBp.route("/register")
-# def register():
-#     return render_template('/auth/register.html')
-
 @frontendBp.route("/backtoclient")
 def back_to_client():
-    return redirect(f'{VUE_BASE_URL}/home')
-# @frontendBp.route("/")
-# def home():
-#     return render_template('/home/index.html')
+    return redirect(f'{VUE_BASE_URL}/login')
