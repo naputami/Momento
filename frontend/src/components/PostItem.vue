@@ -47,12 +47,12 @@ import Swal from 'sweetalert2';
 
 const { mdAndUp } = useDisplay();
 const { username } = useAuthStore();
-const { deletePost, likePost, dislikePost, data, success, error } =useFetch();
+const { deletePost, likePost, dislikePost, data, success, error, totalItem } =useFetch();
 
 const liked = ref(false)
 const store = usePostStore();
 const {postState} = storeToRefs(store);
-const {setDeletedPost, setUpdatedPost} = store;
+const {setDeletedPost, setUpdatedPost, setTotalItems} = store;
 
 
 const handleDeletePost = async (id) => {
@@ -69,6 +69,7 @@ const handleDeletePost = async (id) => {
         await deletePost(id);
         if(success.value){
           setDeletedPost(id);
+          setTotalItems(totalItem.value)
           console.log("post state after delete", postState.value.posts);
           Swal.fire({
                       title: 'Deleting post successfully!',

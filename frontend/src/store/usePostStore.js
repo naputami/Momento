@@ -1,17 +1,30 @@
 import {defineStore} from 'pinia';
-import {reactive} from 'vue';
+import {reactive, computed} from 'vue';
 
 export const usePostStore = defineStore('post', ()=> {
 
     const postState = reactive({
         posts: [],
         currentPage: 1,
-        totalPage: null,
+        totalItems: null,
         cachedPages: {}
     });
 
     const setPosts = (posts) => {
-        postState.posts = postState.posts.concat(posts);
+        const concatedPosts = postState.posts.concat(posts);
+        const set = new Set();
+        const uniquePosts = [];
+        
+        for(const post of concatedPosts){
+            const postString = JSON.stringify(post);
+
+            if(!set.has(postString)){
+                set.add(postString);
+                uniquePosts.push(JSON.parse(postString))
+            }
+
+        }
+        postState.posts = uniquePosts;
 
     };
 
@@ -31,8 +44,8 @@ export const usePostStore = defineStore('post', ()=> {
         postState.cachedPages[page] = data;
     }
 
-    const setTotalPage = (number) => {
-        postState.totalPage = number
+    const setTotalItems = (number) => {
+        postState.totalItems = number
     }
 
     const setUpdatedPost = (post) => {
@@ -47,16 +60,24 @@ export const usePostStore = defineStore('post', ()=> {
        postState.totalPage = null;
     };
 
+
+    const uniquePosts = computed(()=> {
+        return [...new Set(postState.posts)];
+    })
+
+
+
     return {
         postState,
         setPosts,
         removePostData,
         setCurrentPage,
         cachePage,
-        setTotalPage,
+        setTotalItems,
         setNewPost,
         setDeletedPost,
-        setUpdatedPost
+        setUpdatedPost,
+        uniquePosts
     };
 
 });

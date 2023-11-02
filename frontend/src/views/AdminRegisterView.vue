@@ -2,7 +2,7 @@
     <v-app>
 
         <v-container align="center">
-            <h1 class="mt-8 heading">Create Account</h1>
+            <h1 class="mt-8 heading">Create Admin Account</h1>
             <v-sheet :width="smAndUp? '500' : '330'" class="mt-5 pa-6 pb-3" elevation="4" rounded="lg">
                 <v-form @submit.prevent="submit">
                     <v-text-field label="Name" placeholder="John Doe" type="text" v-bind="name"></v-text-field>
@@ -54,7 +54,7 @@
         .string()
         .oneOf([yup.ref('password')], 'Passwords must match')
         .required()
-        .label('Password confirmation')
+        .label('Password confirmation'),
   });
 
 
@@ -77,13 +77,15 @@
 
 
     const submit = handleSubmit( async values => {
+
+        console.log(values)
    
-        await accountRegister('api/auth/signup', values);
+        await accountRegister('api/auth/signup', {...values, role: 'admin'});
 
         if(success.value){
             Swal.fire(
                         {
-                            title: 'Account Registration Success!',
+                            title: 'Admin Account Registration Success!',
                             text: `${success.value}`,
                             icon: 'success',
                             showConfirmButton: false,
@@ -95,7 +97,7 @@
         if(error.value){
             Swal.fire(
                         {
-                            title: 'Account Registration Failed!',
+                            title: 'Admin Account Registration Failed!',
                             text: `${error.value}`,
                             icon: 'error',
                             showConfirmButton: false,

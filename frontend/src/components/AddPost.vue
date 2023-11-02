@@ -1,5 +1,5 @@
 <template>
-      <v-btn @click="dialog = true" icon="$pencil" color="secondary" size="x-large"> </v-btn>
+      <v-btn @click="dialog = true" icon="$pencil" color="primary" size="x-large"> </v-btn>
 
         <v-dialog v-model=dialog width="500">
                 <v-card title="Add New Post">
@@ -22,7 +22,7 @@
                     <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn text="Cancel" @click="dialog = false"></v-btn>
-                    <v-btn variant="tonal" type="submit" @click="dialog = false" text="Post" color="primary"></v-btn>
+                    <v-btn variant="flat" type="submit" @click="dialog = false" text="Post" color="primary"></v-btn>
                     </v-card-actions>
                 </form>
                 </v-card>
@@ -34,13 +34,13 @@ import { ref, reactive } from 'vue';
 import { usePostStore } from '../store/usePostStore';
 import { useFetch } from '../compostable/post';
 import { storeToRefs } from "pinia";
-import Swal from 'sweetAlert2';
+import Swal from 'sweetalert2';
 
 
-const {data, postTextOnly, postFile, success, error} = useFetch();
+const {data, postTextOnly, postFile, success, error, totalItem} = useFetch();
 const store = usePostStore();
 const {postState} = storeToRefs(store);
-const {setNewPost} = store;
+const {setNewPost, setTotalItems} = store;
 
 
 const Toast = Swal.mixin({
@@ -66,6 +66,7 @@ const handleAddPost = async () => {
 
         if(success.value){
             setNewPost(data.value);
+            setTotalItems(totalItem.value)
             formData.content = ''
             console.log('Post without file')
             console.log('this is post state', postState.value.posts)
@@ -94,6 +95,7 @@ const handleAddPost = async () => {
 
         if(success.value){
             setNewPost(data.value);
+            setTotalItems(totalItem.value)
             formData.content = '';
             formData.file = '';
             console.log('Post with file')

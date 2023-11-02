@@ -5,15 +5,15 @@ export const useFetch = () => {
     const success = ref(null);
     const error = ref(null);
     const data = ref([]);
-    const totalPage = ref(null);
+    const totalItem = ref(null);
 
     const fetchPosts = async (url) => {
         try {
             const response = await postApi.get(url);
             data.value = response.data.posts;
             success.value = response.data.success;
-            totalPage.value = response.data.total_page;
-            console.log('this is response total page value', totalPage.value)
+            totalItem.value = response.data.totalPosts;
+            console.log('this is response total page value', totalItem.value)
         } catch(err) {
             error.value = err.response.data.message;
             console.log(err)
@@ -26,6 +26,8 @@ export const useFetch = () => {
             const response = await postApi.post(url, content);
             data.value = response.data.post;
             success.value = response.data.success;
+            totalItem.value = response.data.totalPosts;
+            console.log('this is response total page value', totalItem.value)
         } catch (err) {
             error.value = err.response.data.error;
             console.log(err)
@@ -41,6 +43,8 @@ export const useFetch = () => {
             });
             data.value = response.data.post;
             success.value = response.data.success;
+            totalItem.value = response.data.totalPosts;
+            console.log('this is response total page value', totalItem.value)
         } catch (err) {
             error.value = err.response.data.error;;
             console.log(err)
@@ -61,6 +65,8 @@ export const useFetch = () => {
         try {
             const response = await postApi.delete(`api/posts/${id}`);
             success.value = response.data.success;
+            totalItem.value = response.data.totalPosts;
+            console.log('this is response total page value', totalItem.value)
         } catch(err) {
             error.value = err.response.data.message;
             console.log("Something wrong", err);
@@ -92,7 +98,7 @@ export const useFetch = () => {
         postTextOnly,
         postFile,
         fetchCountPosts,
-        totalPage, 
+        totalItem, 
         deletePost,
         likePost,
         dislikePost,

@@ -31,7 +31,7 @@ postApi.interceptors.response.use(
               headers:{
               'Authorization': `Bearer ${refreshToken}`
           }});
-          const newAccessToken = response.data.access_token;
+          const newAccessToken = response.data.accessToken;
           localStorage.setItem('accessToken', newAccessToken);
           originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
           return postApi(originalRequest);
