@@ -6,7 +6,7 @@ Momento is a simple full stack media social app. There are two account roles in 
 ## Feature
 - Authentication: User can create account and login using registered account to access the application feature
 - Authorization: Member can only delete their own posts, create, and like a post. Admin can manage posts and user data via admin panel
-- Pagination: The app doesnt display post all at once
+- Pagination: The app doesn't display post all at once and will retrieve another post if user send request.
 - Storing image in Minio bucket.
 
 
