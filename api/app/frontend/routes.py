@@ -13,4 +13,4 @@ def login():
 
 @frontendBp.route("/backtoclient")
 def back_to_client():
-    return redirect(f'{VUE_BASE_URL}/login')
+    return redirect(f'{VUE_BASE_URL}/home')

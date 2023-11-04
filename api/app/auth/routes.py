@@ -81,7 +81,6 @@ def logout():
 
     db.session.add(token)
     db.session.commit()
-    session.clear()
 
     return jsonify({
         "message": "Logged out sucessfully"

@@ -12,3 +12,5 @@ Flask-Admin==1.6.1
 minio==7.1.16
 schedule==1.2.0
 python-dotenv==1.0.0
+pytz==2023.3
+gunicorn

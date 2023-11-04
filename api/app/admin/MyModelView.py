@@ -1,13 +1,13 @@
 from flask_admin.contrib.sqla import ModelView
 from flask_login import current_user
-from flask import redirect, render_template
+from flask import redirect
 from werkzeug.security import generate_password_hash
 from flask_admin import AdminIndexView
 from dotenv import load_dotenv
 import os
 load_dotenv()
 
-FLASK_BASE_URL = os.getenv('FLASK_BASE_URL')
+FLASK_BASE_URL = os.getenv('VITE_API_BASE_URL')
 
 class CustomModelView(ModelView):
     def on_model_change(self, form, model, is_created):
@@ -18,7 +18,6 @@ class CustomModelView(ModelView):
     
     def inaccessible_callback(self, name, **kwargs):
         return redirect(f'{FLASK_BASE_URL}/login')
-        # return render_template('admin/inaccessible.html')
 
 class AdminModelView(AdminIndexView):
     def is_accessible(self):
@@ -26,4 +25,3 @@ class AdminModelView(AdminIndexView):
     
     def inaccessible_callback(self, name, **kwargs):
         return redirect(f'{FLASK_BASE_URL}/login')
-        # return render_template('admin/inaccessible.html')

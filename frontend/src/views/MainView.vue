@@ -6,9 +6,20 @@
         <div v-for="item in displayedPosts" :key="item.id">
             <PostItem :user="item.username" :likes="item.likes" :content="item.content" :created_at="item.created_at" :id="item.id" :img_name="item.img_name" :img_path="item.img_path" />
         </div>
-        <div class="mt-8 text-center">
-            <v-btn :prepend-icon="mdiChevronDoubleLeft" @click="changePage(-1)" :disabled="currentPage === 1" variant="elevated" color="primary">Previous</v-btn>
-            <v-btn :append-icon="mdiChevronDoubleRight" @click="changePage(1)" :disabled="currentPage === totalPage" variant="elevated" color="primary" class="ml-2">Next</v-btn>
+        <div class="text-center">
+            <v-container>
+            <v-row justify="center">
+                <v-col cols="8">
+                <v-container class="max-width">
+                    <v-pagination
+                    v-model="currentPage"
+                    class="my-4"
+                    :length="totalPage"
+                    ></v-pagination>
+                </v-container>
+                </v-col>
+            </v-row>
+            </v-container>
         </div>
     </v-container>
     <div class="fab">
@@ -22,15 +33,14 @@
 import { ref, watch, computed, onMounted } from "vue";
 import { usePostStore } from "../store/usePostStore";
 import { storeToRefs } from "pinia";
-import {mdiChevronDoubleRight, mdiChevronDoubleLeft} from '@mdi/js'
 import AddPost from "../components/AddPost.vue";
 import PostItem from "../components/PostItem.vue";
 import NavigationBar from "../components/NavigationBar.vue";
 import { useFetch } from "../compostable/post"
 
 const store = usePostStore();
-const {postState, uniquePosts} = storeToRefs(store);
-const {setPosts, setCurrentPage, cachePage, setTotalItems} = store;
+const {postState} = storeToRefs(store);
+const {setPosts, cachePage, setTotalItems} = store;
 const { fetchPosts, data, totalItem} = useFetch()
 
 const currentPage = ref(postState.value.currentPage);
@@ -44,17 +54,8 @@ onMounted(async () => {
     setPosts(data.value);
     cachePage(currentPage.value, data.value)
     setTotalItems(totalItem.value)
-    console.log("this is unique post", uniquePosts)
 })
 
-const changePage = (pageChange) => {
-      const newPage = currentPage.value + pageChange;
-      if (newPage >= 1 && newPage <= totalPage.value) {
-        currentPage.value = newPage;
-        setCurrentPage(newPage);
-        window.scrollTo(0,0)
-      }
-};
 
 const fetchAnotherPagePost = async () => {
     try{

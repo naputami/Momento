@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia';
-import {reactive, computed} from 'vue';
+import {reactive} from 'vue';
 
 export const usePostStore = defineStore('post', ()=> {
 
@@ -36,10 +36,6 @@ export const usePostStore = defineStore('post', ()=> {
         postState.posts = postState.posts.filter(post => post.id !== id)
     }
     
-    const setCurrentPage = (page) => {
-        postState.currentPage = page;
-    };
-
     const cachePage = (page, data) => {
         postState.cachedPages[page] = data;
     }
@@ -61,23 +57,17 @@ export const usePostStore = defineStore('post', ()=> {
     };
 
 
-    const uniquePosts = computed(()=> {
-        return [...new Set(postState.posts)];
-    })
-
 
 
     return {
         postState,
         setPosts,
         removePostData,
-        setCurrentPage,
         cachePage,
         setTotalItems,
         setNewPost,
         setDeletedPost,
         setUpdatedPost,
-        uniquePosts
     };
 
 });

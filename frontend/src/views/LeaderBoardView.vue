@@ -51,8 +51,13 @@ const page = ref(1);
 const itemPerPage = ref(5);
 
 onMounted(async () => {
-    await fetchCountPosts();
-    countPostData.value = data.value;
+    try {
+        await fetchCountPosts();
+        countPostData.value = data.value;
+    } catch(err){
+        alert('Something error. Please refresh the page!')
+    }
+   
 })
 
 const paginatedData = computed(() => {

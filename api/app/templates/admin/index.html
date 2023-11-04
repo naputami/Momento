@@ -8,24 +8,23 @@
     <div class="card-body">
       <h5 class="card-title">Menu Admin</h5>
       <p class="card-text">Welcome to Admin Dashboard!</p>
-      <button type="button" class="btn btn-primary" onclick="logout(event)">logout</button>
     </div>
 </div>
 <script>
-  function logout(event){
-    event.preventDefault()
-    let xhr = new XMLHttpRequest();
-    let url = "http://127.0.0.1:5000/api/auth/logout";
+//   function logout(event){
+//     event.preventDefault()
+//     let xhr = new XMLHttpRequest();
+//     let url = "/api/auth/logout";
 
-    xhr.open("POST", url, true);
-    xhr.setRequestHeader("Authorization", `Bearer ${localStorage.getItem('accessToken')}`);
-    xhr.onreadystatechange = function () {
-      if (this.readyState == 4 && this.status == 200) {
-        localStorage.clear();
-        window.location.href = "/backtoclient";
-        }
-  };
-  xhr.send();
-}
+//     xhr.open("POST", url, true);
+//     xhr.setRequestHeader("Authorization", `Bearer ${localStorage.getItem('accessToken')}`);
+//     xhr.onreadystatechange = function () {
+//       if (this.readyState == 4 && this.status == 200) {
+//         localStorage.clear();
+//         window.location.href = "/backtoclient";
+//         }
+//   };
+//   xhr.send();
+// }
 </script>
 {% endblock %}

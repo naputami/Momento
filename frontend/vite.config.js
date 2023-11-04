@@ -2,6 +2,9 @@ import { fileURLToPath, URL } from 'node:url'
 
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -15,14 +18,13 @@ export default defineConfig({
   }, 
   server: {
     host: true,
-    port : 5173,
+    port : 4173,
     proxy: {
         '/api': {
-            target: ' http://127.0.0.1:5000',
+            target: 'http://flaskapi:8000',
             changeOrigin: true,
             secure: false
-        }
+        },
+      }
     }
-    
-},
 })

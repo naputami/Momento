@@ -98,18 +98,28 @@ const handleDeletePost = async (id) => {
 };
 
 const handleLikePost = async (id) => {
-  await likePost(id);
-  setUpdatedPost(data.value);
-  liked.value = true;
-  localStorage.setItem(`liked_${id}`, 'true');
+  try {
+    await likePost(id);
+    setUpdatedPost(data.value);
+    liked.value = true;
+    localStorage.setItem(`liked_${id}`, 'true');
+  }catch(err){
+    alert('Something error, please refresh the page!')
+  }
+ 
 };
 
 const handleDislikePost = async (id) => {
-  await dislikePost(id);
-  setUpdatedPost(data.value);
-  liked.value = false;
-  localStorage.setItem(`liked_${id}`, 'false');
-};
+    try{
+      await dislikePost(id);
+      setUpdatedPost(data.value);
+      liked.value = false;
+      localStorage.setItem(`liked_${id}`, 'false');
+    } catch(err){
+      alert('Something error, please refresh the page!')
+    }
+  }
+ 
 
 onMounted(() => {
   const id = props.id;
@@ -129,6 +139,7 @@ const formatDate = (inputDate) => {
 
   return formattedDate;
 }
+
 
 const props = defineProps({
   user: String,

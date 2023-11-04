@@ -4,7 +4,6 @@ from app.models.post import Posts
 from app.models.user import Users
 from app.post import postBp
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from minio import Minio
 from datetime import timedelta
 from werkzeug.utils import secure_filename
 import os
@@ -16,11 +15,6 @@ from sqlalchemy import desc
 @postBp.route("", methods=['GET'], strict_slashes=False)
 @jwt_required(locations=["headers"])
 def get_all_post():
-
-    # limit = request.args.get('limit', 100)
-
-    # if type(limit) is not int:
-    #     return jsonify({'message': 'invalid parameter'}), 400
     user_id = get_jwt_identity()
 
     if not user_id:
@@ -46,24 +40,6 @@ def get_all_post():
     return response, 200
 
 
-# endpoint for getting all posts from one user
-@postBp.route("/<user_id>", methods=['GET'], strict_slashes=False)
-def get_one_user_posts(user_id):
-
-    limit = request.args.get('limit', 20)
-
-    if type(limit) is not int:
-        return jsonify({'message': 'invalid parameter'}), 400
-    
-    posts = db.session.query(Posts).filter(Posts.user_id==user_id).limit(limit)
-
-    data = [post.serialize() for post in posts]
-
-    response = jsonify({
-        "posts": data
-    })
-
-    return response, 200
 
 # endpoint for creating a new post
 # user must log in to create a new post
@@ -90,6 +66,9 @@ def create_post():
         expiration_time = timedelta(days=7)
         if file and allowed_file(file.filename):
             content = request.form.get('content')
+            if not content:
+                 return jsonify({'error': 'Missing content'}), 400
+            
             user_id = get_jwt_identity()
             image_name = secure_filename(file.filename)
             image_size = os.fstat(file.fileno()).st_size
@@ -138,53 +117,6 @@ def create_post():
 
     return response, 200
 
-# endpoint for editing a post
-@postBp.route("/<post_id>", methods=['PATCH'], strict_slashes=False)
-@jwt_required(locations=["headers"])
-def edit_post(post_id):
-    data = request.get_json()
-
-    new_content = data.get("content")
-    new_img_name = data.get("img_name", None)
-    new_img_path = data.get("img_path", None)
-
-
-    if not new_content:
-        return jsonify({'error': 'Missing content'}), 400
-
-    current_user = get_jwt_identity()
-
-    if not current_user:
-        return jsonify({
-            "message": "You must login to edit a post!"
-        }), 401
-
-    post = db.session.query(Posts).filter_by(id=post_id).first()
-
-    if not post:
-        return jsonify({
-            "success": False,
-            "message": "Post not found!"
-        }), 404
-    
-    # casting to string for comparing value only
-    if current_user != str(post.user_id):
-        return jsonify({
-            "message":f'You do not have permission to edit this post.'
-        }), 403
-    
-    post.content = new_content
-    post.img_name = new_img_name
-    post.img_path = new_img_path
-    db.session.commit()
-
-    response = jsonify({
-            "success": True,
-            "message" : f'post with id {post_id} has been changed',
-            "post" : post.serialize()
-    })
-
-    return response, 200
 
 # endpoint for deleting a post
 @postBp.route("/<post_id>", methods=['DELETE'], strict_slashes=False)
