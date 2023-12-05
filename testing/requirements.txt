@@ -1,0 +1,4 @@
+selenium==4.15.2
+pytest==7.4.3
+PyVirtualDisplay==3.0
+chromedriver-autoinstaller==0.6.2
