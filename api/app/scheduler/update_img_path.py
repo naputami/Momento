@@ -12,8 +12,11 @@ def update_img_path():
 
     for post in posts_with_image:
         if post.img_expiration_date <= current_time:
-            post.img_path = client.presigned_get_object(BUCKET_NAME, post.img_name, expires=timedelta(days=7))
-            post.img_expiration_date = current_time + timedelta(days=7)
-            db.session.add(post)
+            try:
+                post.img_path = client.presigned_get_object(BUCKET_NAME, post.img_name, expires=timedelta(days=7))
+                post.img_expiration_date = current_time + timedelta(days=7)
+                db.session.add(post)
+            except:
+                print("There's error in updating image url")
 
     db.session.commit()
