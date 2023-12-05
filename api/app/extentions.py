@@ -8,12 +8,17 @@ import os
 
 load_dotenv()
 
+MINIO_SECRET_KEY = os.getenv("MINIO_ROOT_PASSWORD")
+MINIO_ACCESS_KEY = os.getenv("MINIO_ROOT_USER")
+MINIO_URL = os.getenv("MINIO_URL")
+
 db = SQLAlchemy()
 migrate = Migrate()
 jwt = JWTManager()
 login_manager = LoginManager()
 client = Minio(        
-        "play.min.io", 
-        access_key="Q3AM3UQ867SPQQA43P2F",
-        secret_key="zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG",
+        MINIO_URL, 
+        access_key=MINIO_ACCESS_KEY,
+        secret_key=MINIO_SECRET_KEY,
+        secure=False
         )
