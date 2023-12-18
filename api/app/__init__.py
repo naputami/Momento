@@ -43,14 +43,14 @@ def create_app(config_class=Config):
             count_posts()
             print("Count posts running")
 
-    def schedule_update_img_path():
-        with app.app_context():
-            from app.scheduler.update_img_path import update_img_path
-            update_img_path()
-            print("Update image path running")
+    # def schedule_update_img_path():
+    #     with app.app_context():
+    #         from app.scheduler.update_img_path import update_img_path
+    #         update_img_path()
+    #         print("Update image path running")
     
     schedule.every(60).seconds.do(schedule_count_posts)
-    schedule.every(70).seconds.do(schedule_update_img_path)
+    # schedule.every(70).seconds.do(schedule_update_img_path)
 
     def run_scheduler():
         while True:
