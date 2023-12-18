@@ -17,8 +17,7 @@ migrate = Migrate()
 jwt = JWTManager()
 login_manager = LoginManager()
 client = Minio(        
-        MINIO_URL, 
-        access_key=MINIO_ACCESS_KEY,
-        secret_key=MINIO_SECRET_KEY,
-        secure=False
+        "play.min.io", 
+        access_key="Q3AM3UQ867SPQQA43P2F",
+        secret_key="zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG",
         )
