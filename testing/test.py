@@ -8,6 +8,7 @@ from pyvirtualdisplay import Display
 import time
 from faker import Faker
 
+# faker for auto generating testing data
 fake = Faker()
 test_name = fake.name()
 test_username = "membertest-" + str(fake.pyint())
