@@ -3,6 +3,7 @@
     <NavigationBar />
 
     <v-container class="pt-16">
+        <h2 v-show="displayedPosts.length === 0" class="mt-10 heading">No Post Created!</h2>
         <div v-for="item in displayedPosts" :key="item.id">
             <PostItem :user="item.username" :likes="item.likes" :content="item.content" :created_at="item.created_at" :id="item.id" :img_name="item.img_name" :img_path="item.img_path" />
         </div>
