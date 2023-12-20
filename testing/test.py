@@ -18,8 +18,8 @@ test_admin_email = fake.free_email()
 test_admin_username = "admintest-" + str(fake.pyint())
 test_text = "this is test text" 
 
-# display = Display(visible=0, size=(800, 800))
-# display.start()
+display = Display(visible=0, size=(800, 800))
+display.start()
 
 chromedriver_autoinstaller.install()
 chrome_options = webdriver.ChromeOptions()
@@ -33,7 +33,7 @@ for option in options:
     chrome_options.add_argument(option)
 
 
-class TestFrontPage:
+class TestMemberFearture:
     @classmethod
     def setup_class(cls):
         cls.driver = webdriver.Chrome(options=chrome_options)
@@ -49,7 +49,7 @@ class TestFrontPage:
 
     def test_display_signup_button(self):
         signup_button = self.driver.find_element(By.XPATH, "//a[@href='/signup']")
-        assert signup_button.is_displayed(), "Pengecekan signup button gagal"
+        assert signup_button.is_displayed(), "Failed to check signup button"
     
     def test_register_user(self):
         signup_button = self.driver.find_element(By.XPATH, "//a[@href='/signup']")
