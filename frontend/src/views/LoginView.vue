@@ -5,8 +5,8 @@
         <h1 class="mt-8 heading">Welcome Back!</h1>
           <v-sheet :width="smAndUp? '500' : '330'" class="mt-5 pa-6 pb-3" elevation="4" rounded="lg">
               <v-form @submit.prevent="handleLogin">
-                <v-text-field label="Username" color="primary" prepend-inner-icon="$account" required v-bind="username"></v-text-field>
-                <v-text-field label="Password" :type="showPassword? 'text': 'password'"  
+                <v-text-field label="Username" id="username" color="primary" prepend-inner-icon="$account" required v-bind="username"></v-text-field>
+                <v-text-field label="Password" id="password" :type="showPassword? 'text': 'password'"  
                 prepend-inner-icon="$password" :append-inner-icon="showPassword? mdiEyeOff : mdiEye" 
                 color="primary" @click:append-inner="showPassword = !showPassword" required v-bind="password"></v-text-field>
                 <div class="d-flex flex-column my-2">

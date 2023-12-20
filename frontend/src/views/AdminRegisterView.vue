@@ -5,11 +5,11 @@
             <h1 class="mt-8 heading">Create Admin Account</h1>
             <v-sheet :width="smAndUp? '500' : '330'" class="mt-5 pa-6 pb-3" elevation="4" rounded="lg">
                 <v-form @submit.prevent="submit">
-                    <v-text-field label="Name" placeholder="John Doe" type="text" v-bind="name"></v-text-field>
-                    <v-text-field label="Email address" placeholder="johndoe@gmail.com" type="email" v-bind="email"></v-text-field>
-                    <v-text-field label="Username" placeholder="johndoe" type="text" v-bind="username"></v-text-field>
-                    <v-text-field label="Password" :type="showPassword? 'text': 'password'" :append-inner-icon="showPassword? mdiEyeOff : mdiEye" @click:append-inner="showPassword = !showPassword" v-bind="password"></v-text-field>
-                    <v-text-field label="Retype password" :type="showRetypePassword? 'text': 'password'" :append-inner-icon="showRetypePassword? mdiEyeOff : mdiEye" @click:append-inner="showRetypePassword = !showRetypePassword" v-bind="passwordConfirm"></v-text-field>
+                    <v-text-field label="Name" placeholder="John Doe" type="text" v-bind="name" id="name"></v-text-field>
+                    <v-text-field label="Email address" placeholder="johndoe@gmail.com" type="email" v-bind="email" id="email"></v-text-field>
+                    <v-text-field label="Username" placeholder="johndoe" type="text" v-bind="username" id="username"></v-text-field>
+                    <v-text-field label="Password" id="password" :type="showPassword? 'text': 'password'" :append-inner-icon="showPassword? mdiEyeOff : mdiEye" @click:append-inner="showPassword = !showPassword" v-bind="password"></v-text-field>
+                    <v-text-field label="Retype password" id="passwordConfirm" :type="showRetypePassword? 'text': 'password'" :append-inner-icon="showRetypePassword? mdiEyeOff : mdiEye" @click:append-inner="showRetypePassword = !showRetypePassword" v-bind="passwordConfirm"></v-text-field>
                     <div class="d-flex flex-column my-2">
                         <v-btn type="submit" color ="primary">Sign Up</v-btn>
                         <v-btn color ="primary" variant="outlined" class="mt-2" @click="resetForm()">Clear Form</v-btn>

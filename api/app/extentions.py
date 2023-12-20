@@ -8,6 +8,10 @@ import os
 
 load_dotenv()
 
+MINIO_SECRET_KEY = os.getenv("MINIO_ROOT_PASSWORD")
+MINIO_ACCESS_KEY = os.getenv("MINIO_ROOT_USER")
+MINIO_URL = os.getenv("MINIO_URL")
+
 db = SQLAlchemy()
 migrate = Migrate()
 jwt = JWTManager()
