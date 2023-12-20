@@ -1,0 +1,34 @@
+name: CI (Continue Integrations)
+
+on:
+    pull_request:
+        branches: [ "master" ]
+
+jobs:
+
+
+    build-testing:
+        name: Build and Testing
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v2
+
+            - name: Install Docker Compose
+              run: |
+                sudo apt-get update
+                sudo apt-get install -y docker-compose
+
+            - name: Build and Run Container
+              run: |
+                sudo docker compose up -d
+
+            - name: Install requirements for testing
+              run: |
+                pip install -r testing/requirements.txt
+
+            - name: Testing
+              run: |
+                sleep 20
+                pytest testing/test.py
