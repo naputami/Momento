@@ -1,21 +1,5 @@
 version: '3.8'
 services:
-  minio:
-    build:
-      context: ./minio
-      dockerfile: Dockerfile
-    container_name: minio_container
-    ports:
-      - 9000:9000
-      - 9001:9001
-    environment:
-      - MINIO_ROOT_USER=${MINIO_ROOT_USER}
-      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
-    hostname: minio
-    volumes:
-      - minio-data:/mnt/data
-    networks:
-      - mynetworks
     
   postgres:
       build:
@@ -31,8 +15,6 @@ services:
       hostname: postgres
       volumes:
         - postgres-volume:/var/lib/postgresql/data
-      depends_on:
-        - minio
       networks:
         - mynetworks
   
@@ -48,12 +30,7 @@ services:
         - VITE_API_BASE_URL=${VITE_API_BASE_URL}
         - MINIO_BUCKET=${MINIO_BUCKET}
         - VUE_BASE_URL=${VUE_BASE_URL}
-        - MINIO_URL=${MINIO_URL}
-        - MINIO_ROOT_USER=${MINIO_ROOT_USER}
-        - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
       hostname: flaskapi
-      volumes:
-        - ./api:/app
       ports:
         - 8000:8000
       depends_on:
@@ -78,7 +55,6 @@ services:
 
 volumes:
   postgres-volume:
-  minio-data:
 
 networks:
   mynetworks:
