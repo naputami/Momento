@@ -8,6 +8,7 @@ from pyvirtualdisplay import Display
 import time
 from faker import Faker
 
+# faker for auto generating testing data
 fake = Faker()
 test_name = fake.name()
 test_username = "membertest-" + str(fake.pyint())
@@ -18,8 +19,10 @@ test_admin_email = fake.free_email()
 test_admin_username = "admintest-" + str(fake.pyint())
 test_text = "this is test text" 
 
+# prevent launch browser GUI
 # display = Display(visible=0, size=(800, 800))
 # display.start()
+
 chromedriver_autoinstaller.install()
 chrome_options = webdriver.ChromeOptions()
 
