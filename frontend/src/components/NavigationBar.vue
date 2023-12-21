@@ -1,10 +1,10 @@
 <template>
         <v-navigation-drawer v-model="sidebar" color="primary" temporary>
         <v-list  density="compact" nav>
-          <v-list-item prepend-icon="$home" title="Home" value="home" to="/home"></v-list-item>
-          <v-list-item prepend-icon="$crown" title="Leaderboard" value="leaderboard" to="/leaderboard"></v-list-item>
-          <v-list-item prepend-icon="$admin" title="Admin" value="admin" :href="urlAdmin" v-show="role === 'admin'"></v-list-item>
-          <v-list-item prepend-icon="$logout" title="Logout" value="logout" @click="handleLogout"></v-list-item>
+          <v-list-item prepend-icon="$home" title="Home" value="home" to="/home" id="home"></v-list-item>
+          <v-list-item prepend-icon="$crown" title="Leaderboard" value="leaderboard" to="/leaderboard" id="leaderboard"></v-list-item>
+          <v-list-item prepend-icon="$admin" title="Admin" value="admin" :href="urlAdmin" v-show="role === 'admin'" id="admin"></v-list-item>
+          <v-list-item prepend-icon="$logout" title="Logout" value="logout" @click="handleLogout" id="logout"></v-list-item>
         </v-list>
     </v-navigation-drawer>
     <v-app-bar color="primary" scroll-behavior="hide">
