@@ -27,9 +27,9 @@
     <v-card-actions class="pa-0">
       <v-list-item class="w-100 px-0">
           <div class="d-flex align-center">
-            <v-btn :icon="liked? '$heart' : '$heartOutline'" color="red" @click="liked? handleDislikePost(id) : handleLikePost(id)"></v-btn>
+            <v-btn :icon="liked? '$heart' : '$heartOutline'" color="red" @click="liked? handleDislikePost(id) : handleLikePost(id)" class ="like-post"></v-btn>
             <span class="subheading me-2">{{ likes }}</span>
-            <v-btn icon="$delete" @click="handleDeletePost(id)" v-show="user === username"></v-btn>
+            <v-btn icon="$delete" @click="handleDeletePost(id)" v-show="user === username" class ="delete-post"></v-btn>
           </div>
       </v-list-item>
     </v-card-actions>
