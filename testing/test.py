@@ -20,14 +20,14 @@ test_admin_username = "admintest-" + str(fake.pyint())
 test_text = "this is test text" 
 
 # prevent launch browser GUI
-display = Display(visible=0, size=(800, 800))
-display.start()
+# display = Display(visible=0, size=(800, 800))
+# display.start()
 
 chromedriver_autoinstaller.install()
 chrome_options = webdriver.ChromeOptions()
 
 options = [
-    "--window-size=1200,1200",
+    "--headless",
     "--ignore-certificate-errors"
 ]
 
@@ -133,7 +133,7 @@ class TestMemberFearture:
         assert like_number.text == "0", "Failed to check like feature"
     
     def test_delete_post(self):
-        delete_button = self.driver.find_element(By.CSS_SELECTOR, "div:nth-child(1) > .v-card:nth-child(1) .v-btn:nth-child(3) .v-icon__svg:nth-child(1)")
+        delete_button = self.driver.find_element(By.CLASS_NAME, "delete-post")
         delete_button.click()
         time.sleep(3)
         confirm_button = self.driver.find_element(By.CLASS_NAME, "swal2-confirm")
@@ -144,14 +144,14 @@ class TestMemberFearture:
         assert post_text != test_text, "Failed to test delete post"
     
     def test_leaderboard(self):
-        leaderboard_button = self.driver.find_element(By.CSS_SELECTOR, ".v-btn:nth-child(2) > .v-btn__content")
+        leaderboard_button = self.driver.find_element(By.XPATH, "//div[@id='app']/div/div/header/div/div[3]/a[2]/span[3]")
         leaderboard_button.click()
         time.sleep(3)
         leaderboard_table = self.driver.find_element(By.TAG_NAME, "table")
         assert leaderboard_table.is_displayed(), "Failed to test leaderboard"
     
     def test_logout(self):
-        logout_button = self.driver.find_element(By.CSS_SELECTOR, ".v-btn:nth-child(4) > .v-btn__content")
+        logout_button = self.driver.find_element(By.XPATH, "//div[@id='app']/div/div/header/div/div[3]/button/span[3]")
         logout_button.click()
         confirm_button = self.driver.find_element(By.CLASS_NAME, "swal2-confirm")
         confirm_button.click()
@@ -208,7 +208,7 @@ class TestAdminFeature:
         assert title_element.text == "Momento", "Failed to check login process"
 
     def test_admin_panel(self):
-        admin_panel_button = self.driver.find_element(By.CSS_SELECTOR, ".v-btn--flat:nth-child(3)")
+        admin_panel_button = self.driver.find_element(By.XPATH, "//div[@id='app']/div/div/header/div/div[3]/a[3]/span[3]")
         admin_panel_button.click()
         time.sleep(3)
 
