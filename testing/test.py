@@ -20,14 +20,14 @@ test_admin_username = "admintest-" + str(fake.pyint())
 test_text = "this is test text" 
 
 # prevent launch browser GUI
-# display = Display(visible=0, size=(800, 800))
-# display.start()
+display = Display(visible=0, size=(800, 800))
+display.start()
 
 chromedriver_autoinstaller.install()
 chrome_options = webdriver.ChromeOptions()
 
 options = [
-    "--headless",
+    "--window-size=1920,1200"
     "--ignore-certificate-errors"
 ]
 
