@@ -3,11 +3,9 @@ from flask_login import current_user
 from flask import redirect
 from werkzeug.security import generate_password_hash
 from flask_admin import AdminIndexView
-from dotenv import load_dotenv
-import os
-load_dotenv()
 
-FLASK_BASE_URL = os.getenv('VITE_API_BASE_URL')
+
+FLASK_BASE_URL = "http://localhost:8000"
 
 class CustomModelView(ModelView):
     def on_model_change(self, form, model, is_created):
