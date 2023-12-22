@@ -24,7 +24,7 @@ jobs:
                  echo MINIO_BUCKET=${{ vars.MINIO_BUCKET }} >> .env
                  echo JWT_SECRET_KEY=${{ vars.JWT_SECRET_KEY }} >> .env
                  echo SECRET_KEY=${{ vars.SECRET_KEY }} >> .env
-                 echo SQLALCHEMY_DATABASE_URI=${{ vars.SQLALCHEMY_DATABASE_URI }} >> .env
+                 export SQLALCHEMY_DATABASE_URI=${{ vars.SQLALCHEMY_DATABASE_URI }}
                  cat .env
                  ls -l
                  
