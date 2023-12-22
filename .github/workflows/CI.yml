@@ -15,19 +15,18 @@ jobs:
               with:
                   ref: main
                   
-            # - name: Create .env file
-            #   run: |
-            #      touch .env
-            #      echo POSTGRES_USER=${{ vars.POSTGRES_USER }} >> .env
-            #      echo POSTGRES_DB=${{ vars.POSTGRES_USER }} >> .env
-            #      echo POSTGRES_PASSWORD=${{ vars.POSTGRES_PASSWORD }} >> .env
-            #      echo MINIO_BUCKET=${{ vars.MINIO_BUCKET }} >> .env
-            #      echo JWT_SECRET_KEY=${{ vars.JWT_SECRET_KEY }} >> .env
-            #      echo SECRET_KEY=${{ vars.SECRET_KEY }} >> .env
-            #      export SQLALCHEMY_DATABASE_URI=${{ vars.SQLALCHEMY_DATABASE_URI }}
-            #      printenv SQLALCHEMY_DATABASE_URI
-            #      cat .env
-            #      ls -l
+            - name: Create .env file
+              run: |
+                 touch .env
+                 echo POSTGRES_USER=${{ vars.POSTGRES_USER }} >> .env
+                 echo POSTGRES_DB=${{ vars.POSTGRES_USER }} >> .env
+                 echo POSTGRES_PASSWORD=${{ vars.POSTGRES_PASSWORD }} >> .env
+                 echo MINIO_BUCKET=${{ vars.MINIO_BUCKET }} >> .env
+                 echo JWT_SECRET_KEY=${{ vars.JWT_SECRET_KEY }} >> .env
+                 echo SECRET_KEY=${{ vars.SECRET_KEY }} >> .env
+                 export SQLALCHEMY_DATABASE_URI=${{ vars.SQLALCHEMY_DATABASE_URI }}
+                 cat .env
+                 ls -l
                  
             - name: Install Docker Compose
               run: |
@@ -37,14 +36,14 @@ jobs:
             - name: Build and Run Container
               run: |
                 sudo docker compose pull && sudo docker compose up -d && sudo docker compose config
-              env:
-               POSTGRES_USER:  ${{ secrets.POSTGRES_USER }}
-               POSTGRES_DB:  ${{ secrets.POSTGRES_DB }}
-               POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD}}
-               MINIO_BUCKET:  ${{ secrets.MINIO_BUCKET }}
-               JWT_SECRET_KEY:  ${{ secrets.JWT_SECRET_KEY }}
-               SECRET_KEY:  ${{ secrets.SECRET_KEY }}
-               SQLALCHEMY_DATABASE_URI: postgresql://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD}}@postgres/${{ secrets.POSTGRES_DB }}
+              # env:
+              #  POSTGRES_USER:  ${{ secrets.POSTGRES_USER }}
+              #  POSTGRES_DB:  ${{ secrets.POSTGRES_DB }}
+              #  POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD}}
+              #  MINIO_BUCKET:  ${{ secrets.MINIO_BUCKET }}
+              #  JWT_SECRET_KEY:  ${{ secrets.JWT_SECRET_KEY }}
+              #  SECRET_KEY:  ${{ secrets.SECRET_KEY }}
+              #  SQLALCHEMY_DATABASE_URI: postgresql://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD}}@postgres/${{ secrets.POSTGRES_DB }}
 
 
             - name: Install requirements for testing
