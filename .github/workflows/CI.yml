@@ -26,7 +26,7 @@ jobs:
                  # echo SECRET_KEY=${{ vars.SECRET_KEY }} >> .env
                  # export SQLALCHEMY_DATABASE_URI=${{ vars.SQLALCHEMY_DATABASE_URI }}
                  # cat .env
-                 la -l
+                 ls -la | grep .env
                  pwd
                  
             - name: Install Docker Compose
