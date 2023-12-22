@@ -147,9 +147,10 @@ class TestMemberFearture:
         assert delete_notification.text == 'Deleting post successfully!', "Failed to test delete post"
     
     def test_leaderboard(self):
-        leaderboard_button = self.driver.find_element(By.XPATH, "//div[@id='app']/div/div/header/div/div[3]/a[2]/span[3]")
+        leaderboard_button = self.driver.find_element(By.XPATH, "//div[@id='app']/div/div/header/div/div[3]/a[2]")
+        time.sleep(5)
         leaderboard_button.click()
-        time.sleep(3)
+        time.sleep(5)
         leaderboard_table = self.driver.find_element(By.TAG_NAME, "table")
         assert leaderboard_table.is_displayed(), "Failed to test leaderboard"
     
