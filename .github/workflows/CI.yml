@@ -12,6 +12,8 @@ jobs:
         steps:
             - name: Checkout Repository
               uses: actions/checkout@v2
+              with:
+                  ref: main
 
             - name: Install Docker Compose
               run: |
@@ -20,7 +22,8 @@ jobs:
 
             - name: Build and Run Container
               run: |
-                sudo docker compose up -d
+                sudo docker compose pull && sudo docker compose up -d
+
 
             - name: Install requirements for testing
               run: |
