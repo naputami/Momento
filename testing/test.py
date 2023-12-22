@@ -29,7 +29,9 @@ chrome_options = webdriver.ChromeOptions()
 options = [
     "--headless",
     "--window-size=1920,1080",
-    "--ignore-certificate-errors"
+    "--ignore-certificate-errors",
+    'user-agent="MQQBrowser/26 Mozilla/5.0 (Linux; U; Android 2.3.7; zh-cn; MB200 Build/GRJ22; CyanogenMod-7) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1"',
+    "--no-sandbox"
 ]
 
 for option in options:
@@ -139,10 +141,10 @@ class TestMemberFearture:
         time.sleep(3)
         confirm_button = self.driver.find_element(By.CLASS_NAME, "swal2-confirm")
         confirm_button.click()
-        time.sleep(3)
-        post_text = self.driver.find_element(By.CLASS_NAME, "text-body-1")
+        time.sleep(1)
+        delete_notification = self.driver.find_element(By.ID, "swal2-title")
         
-        assert post_text != test_text, "Failed to test delete post"
+        assert delete_notification.text == 'Deleting post successfully!', "Failed to test delete post"
     
     def test_leaderboard(self):
         leaderboard_button = self.driver.find_element(By.XPATH, "//div[@id='app']/div/div/header/div/div[3]/a[2]/span[3]")
