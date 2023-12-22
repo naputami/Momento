@@ -25,6 +25,7 @@ jobs:
                  echo JWT_SECRET_KEY=${{ vars.JWT_SECRET_KEY }} >> .env
                  echo SECRET_KEY=${{ vars.SECRET_KEY }} >> .env
                  export SQLALCHEMY_DATABASE_URI=${{ vars.SQLALCHEMY_DATABASE_URI }}
+                 printenv SQLALCHEMY_DATABASE_URI
                  cat .env
                  ls -l
                  
