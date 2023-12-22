@@ -13,18 +13,23 @@ jobs:
             - name: Checkout Repository
               uses: actions/checkout@v2
 
-            - name: Create .env file
-              run: |
-                  echo "${{ secrets.ENV_FILE }}" > .env
-
             - name: Install Docker Compose
               run: |
                 sudo apt-get update
                 sudo apt-get install -y docker-compose
 
             - name: Build and Run Container
+              env:
+                   POSTGRES_USER:  ${{ secrets.POSTGRES_USER }}
+                   POSTGRES_DB:  ${{ secrets.POSTGRES_DB }}
+                   POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD}}
+                   MINIO_BUCKET:  ${{ secrets.MINIO_BUCKET }}
+                   JWT_SECRET_KEY:  ${{ secrets.JWT_SECRET_KEY }}
+                   SECRET_KEY:  ${{ secrets.SECRET_KEY }}
+                   SQLALCHEMY_DATABASE_URI: postgresql://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD}}@postgres/${{ secrets.POSTGRES_DB }}
               run: |
                 sudo docker compose pull && sudo docker compose up -d
+
 
             - name: Install requirements for testing
               run: |
