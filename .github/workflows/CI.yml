@@ -26,6 +26,7 @@ jobs:
                  echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
                  echo SQLALCHEMY_DATABASE_URI=postgresql://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD}}@postgres/${{ secrets.POSTGRES_DB }} >> .env
                  cat .env
+                 ls -l
                  
             - name: Install Docker Compose
               run: |
