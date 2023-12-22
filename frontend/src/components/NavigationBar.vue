@@ -47,7 +47,7 @@ const { removeUserData, role } = useAuthStore();
 const {removePostData} = usePostStore();
 const sidebar = ref(false);
 const router = useRouter();
-const urlAdmin = import.meta.env.VITE_API_BASE_URL + "/admin";
+const urlAdmin = "http://localhost:8000/admin";
 console.log(urlAdmin)
 
 const handleLogout = async () => {
