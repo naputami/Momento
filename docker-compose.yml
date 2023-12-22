@@ -27,9 +27,7 @@ services:
         - SQLALCHEMY_DATABASE_URI=${SQLALCHEMY_DATABASE_URI}
         - JWT_SECRET_KEY=${JWT_SECRET_KEY}      
         - SECRET_KEY=${SECRET_KEY}
-        - VITE_API_BASE_URL=${VITE_API_BASE_URL}
         - MINIO_BUCKET=${MINIO_BUCKET}
-        - VUE_BASE_URL=${VUE_BASE_URL}
       hostname: flaskapi
       ports:
         - 8000:8000
@@ -42,8 +40,8 @@ services:
       build:
         context: ./frontend
         dockerfile: Dockerfile
-        args:
-          - VITE_API_BASE_URL=${VITE_API_BASE_URL}
+        # args:
+        #   - VITE_API_BASE_URL=${VITE_API_BASE_URL}
       container_name: vue_container
       hostname: vueclient
       ports:
