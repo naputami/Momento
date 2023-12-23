@@ -5,10 +5,10 @@ load_dotenv()
 
 
 class Config:
-    # POSTGRES_USER = os.getenv(POSTGRES_USER)
-    # POSTGRES_DB = os.getenv(POSTGRES_DB)
-    # POSTGRES_PASSWORD = os.getenv(POSTGRES_PASSWORD)
-    SQLALCHEMY_DATABASE_URI = "postgresql://postgres:postgres@postgres/momento"
+    POSTGRES_USER = os.getenv(POSTGRES_USER)
+    POSTGRES_DB = os.getenv(POSTGRES_DB)
+    POSTGRES_PASSWORD = os.getenv(POSTGRES_PASSWORD)
+    SQLALCHEMY_DATABASE_URI = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@postgres/{POSTGRES_DB}"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     
     JWT_TOKEN_LOCATION = ["headers"]
