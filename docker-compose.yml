@@ -20,10 +20,13 @@ services:
       image: naputami/flaskapi:latest
       container_name: flask_container
       environment:
-        - SQLALCHEMY_DATABASE_URI=${SQLALCHEMY_DATABASE_URI}
+        # - SQLALCHEMY_DATABASE_URI=${SQLALCHEMY_DATABASE_URI}
         - JWT_SECRET_KEY=${JWT_SECRET_KEY}      
         - SECRET_KEY=${SECRET_KEY}
         - MINIO_BUCKET=${MINIO_BUCKET}
+        - POSTGRES_USER=${POSTGRES_USER}
+        - POSTGRES_DB=${POSTGRES_DB}
+        - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       hostname: flaskapi
       ports:
         - 8000:8000
