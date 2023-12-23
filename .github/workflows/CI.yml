@@ -16,15 +16,15 @@ jobs:
                   ref: main
                   
             - name: Create .env file
-              uses: SpicyPizza/create-envfile@v2.0
+              uses: ozaytsev86/create-env-file@v1
               with:
-               envkey_POSTGRES_USER:  ${{ secrets.POSTGRES_USER }}
-               envkey_POSTGRES_DB:  ${{ secrets.POSTGRES_DB }}
-               envkey_POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD}}
-               envkey_MINIO_BUCKET:  ${{ secrets.MINIO_BUCKET }}
-               envkey_JWT_SECRET_KEY:  ${{ secrets.JWT_SECRET_KEY }}
-               envkey_SECRET_KEY:  ${{ secrets.SECRET_KEY }}
-               envkey_SQLALCHEMY_DATABASE_URI: ${{ secrets.SQLALCHEMY_DATABASE_URI }}
+               INPUT_ENV_POSTGRES_USER:  ${{ secrets.POSTGRES_USER }}
+               INPUT_ENV_POSTGRES_DB:  ${{ secrets.POSTGRES_DB }}
+               INPUT_ENV_POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD}}
+               INPUT_ENV_MINIO_BUCKET:  ${{ secrets.MINIO_BUCKET }}
+               INPUT_ENV_JWT_SECRET_KEY:  ${{ secrets.JWT_SECRET_KEY }}
+               INPUT_ENV_SECRET_KEY:  ${{ secrets.SECRET_KEY }}
+               # INPUT_ENV_SQLALCHEMY_DATABASE_URI: ${{ secrets.SQLALCHEMY_DATABASE_URI }}
               # run: |
               #    touch .env
               #    echo POSTGRES_USER=${{ vars.POSTGRES_USER }} >> .env
