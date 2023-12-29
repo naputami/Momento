@@ -58,4 +58,5 @@ jobs:
             - name: Testing
               run: |
                 sleep 20
+                curl localhost:8000
                 pytest testing/test.py
