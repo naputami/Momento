@@ -40,7 +40,7 @@ jobs:
 
             - name: Build and Run Container
               run: |
-                sudo docker compose pull && sudo docker compose --env-file .env up
+                sudo docker compose pull && sudo docker compose --env-file .env up -d
               # env:
               #  POSTGRES_USER:  ${{ secrets.POSTGRES_USER }}
               #  POSTGRES_DB:  ${{ secrets.POSTGRES_DB }}
