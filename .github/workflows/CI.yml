@@ -16,15 +16,6 @@ jobs:
                   ref: main
                   
             - name: Create .env file
-              # uses: ozaytsev86/create-env-file@v1
-              # with:
-              #  INPUT_ENV_POSTGRES_USER:  ${{ secrets.POSTGRES_USER }}
-              #  INPUT_ENV_POSTGRES_DB:  ${{ secrets.POSTGRES_DB }}
-              #  INPUT_ENV_POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD}}
-              #  INPUT_ENV_MINIO_BUCKET:  ${{ secrets.MINIO_BUCKET }}
-              #  INPUT_ENV_JWT_SECRET_KEY:  ${{ secrets.JWT_SECRET_KEY }}
-              #  INPUT_ENV_SECRET_KEY:  ${{ secrets.SECRET_KEY }}
-               # INPUT_ENV_SQLALCHEMY_DATABASE_URI: ${{ secrets.SQLALCHEMY_DATABASE_URI }}
               run: |
                  echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> .env
                  echo "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" >> .env
@@ -41,15 +32,6 @@ jobs:
             - name: Build and Run Container
               run: |
                 sudo docker compose pull && sudo docker compose --env-file .env up -d
-              # env:
-              #  POSTGRES_USER:  ${{ secrets.POSTGRES_USER }}
-              #  POSTGRES_DB:  ${{ secrets.POSTGRES_DB }}
-              #  POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD}}
-              #  MINIO_BUCKET:  ${{ secrets.MINIO_BUCKET }}
-              #  JWT_SECRET_KEY:  ${{ secrets.JWT_SECRET_KEY }}
-              #  SECRET_KEY:  ${{ secrets.SECRET_KEY }}
-              #  SQLALCHEMY_DATABASE_URI: postgresql://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD}}@postgres/${{ secrets.POSTGRES_DB }}
-
 
             - name: Install requirements for testing
               run: |
