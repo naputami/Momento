@@ -1,6 +1,10 @@
 name: CI (Continue Integrations)
 
-on: workflow_dispatch
+on: 
+  pull_request:
+    branches:
+      - main
+
 
 jobs:
 
