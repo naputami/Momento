@@ -1,6 +1,9 @@
 name: CD (Continuous Delivery & Deployment)
 
-on: workflow_dispatch
+on: 
+  push:
+    branches:
+      - main
 
 jobs:
     
