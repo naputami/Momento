@@ -51,6 +51,7 @@ jobs:
     deploy:
         name: Deploy to server
         runs-on: self-hosted
+        needs: build-push
 
         steps:
             - name: Checkout Repository
