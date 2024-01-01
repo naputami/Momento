@@ -19,7 +19,7 @@ test_admin_email = fake.free_email()
 test_admin_username = "admintest-" + str(fake.pyint())
 test_text = "this is test text" 
 
-# prevent launch browser GUI
+
 # display = Display(visible=0, size=(800, 800))
 # display.start()
 
