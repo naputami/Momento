@@ -24,7 +24,6 @@ services:
       env_file:
         - .env
       environment:
-        # - SQLALCHEMY_DATABASE_URI=${SQLALCHEMY_DATABASE_URI}
         - JWT_SECRET_KEY=${JWT_SECRET_KEY}      
         - SECRET_KEY=${SECRET_KEY}
         - MINIO_BUCKET=${MINIO_BUCKET}
