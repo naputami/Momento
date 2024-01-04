@@ -1,7 +1,6 @@
 import pytest
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
 import chromedriver_autoinstaller
 import time
 from faker import Faker
