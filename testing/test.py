@@ -1,10 +1,8 @@
 import pytest
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import chromedriver_autoinstaller
-from pyvirtualdisplay import Display
 import time
 from faker import Faker
 
@@ -19,9 +17,6 @@ test_admin_email = fake.free_email()
 test_admin_username = "admintest-" + str(fake.pyint())
 test_text = "this is test text" 
 
-
-# display = Display(visible=0, size=(800, 800))
-# display.start()
 
 chromedriver_autoinstaller.install()
 chrome_options = webdriver.ChromeOptions()
