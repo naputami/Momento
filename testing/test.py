@@ -110,6 +110,7 @@ class TestMemberFearture:
         text_input.click()
         text_input.send_keys(test_text)
         send_button = self.driver.find_element(By.XPATH, "//button[@type='submit']")
+        time.sleep(2)
         send_button.click()
         time.sleep(10)
 
