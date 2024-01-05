@@ -55,6 +55,48 @@ The button will be displayed if the logged user has role as admin. Admin can do 
 ![Test case logout](/readmeimg/testcase_logout.gif "Test case logout")  
 When a user clicks the logout button, the app sends a POST request to `api/auth/logout`. The user's token is added to the blacklist_token table. If logout is success, all user data will be removed from local storage and the app state. In case the logout failed, a window alert will be displayed to the user.
 
+## Deployment
+### Background
+In order the application is able to be publicly accessed, the application is deployed to a VPS with registered domain. Github Actions is implemented to automate the CI/CD workflow. 
+
+### CI/CD Flow
+#### Continue Integration
+CI workflow is runned on a Github Runner (Ubuntu). The workflow is triggered by a pull request. Flask, Vue, and Postgres images in the Docker Hub are pulled and used to run Docker container in the runner. After the container successfully running, an end-to-end testing is performed using pytest and Selenium. The testing script can be accessed in this [folder](/testing/test.py) and CI configiration can be accessed in this [folder](.github/workflows/CI.yml).
+![CI workflow success](/readmeimg/CI.png "CI workflow success")  
+
+#### Continue Delivery and Deployment
+Continue delivery and deployment workflow is triggered by a push or merge on main branches. The configuration can be accesed in this [folder](.github/workflows/CD.yml). Ubuntu Github Runner is used for building Docker images and push them to a Docker Hub repository. After the processs finished, deployment process will be started. A Ubuntu VPS with 1GB RAM and 20 GB SSD is used as self-hosted runner for deployment. The Docker images will be pulled to the VPS and used for running Flask, Vue, and Postgres containers. The script runner is turned into a service.
+![CD workflow success](/readmeimg/CD.png "CD workflow success")  
+
+### DNS Record Creation
+A domain name, momento-app.cloud, from RumahWeb is used for identifying the public IP of the VPS. DNS Records is created so the domain name can be used in SSL certificate installation.
+![DNS record creation](/readmeimg/DNS_record.png "DNS record creation")  
+
+### Reverse Proxy and SSL Certificate Installation
+1. Install Nginx and Certbot in the VPS.
+```
+sudo apt install nginx -y
+sudo apt install certbot python3-certbot-nginx
+```   
+2. Configure firewall for Nginx Full
+```
+sudo ufw allow Nginx Full
+```
+3. Ensure the Nginx service active
+```
+sudo systemctl status nginx
+```   
+4. Write reverse proxy configuration and save as `momento-colud.app` in `/etc/nginx/sites-available` then link to `/etc/nginx/sites-enabled`. 
+5. Check configuration error
+```
+sudo nginx -t
+```
+6. Generate SSL certificate using Certbot
+```
+sudo certbot --nginx -d "momento-app.cloud"
+```
+![Reverse Proxy and SSL Instalation](/readmeimg/reverse_proxy.png "Reverse Proxy and SSL Instalation")  
+
 ## How To Run This App
 1. clone this repository
 ```
